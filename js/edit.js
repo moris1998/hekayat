@@ -23,19 +23,58 @@
   var BRANCH  = 'main';
 
   /* ---------------------------------------------------------- token
-     Decap stores the logged-in user under a couple of possible keys
-     depending on version, so check both rather than guess. */
-  function token() {
-    var keys = ['decap-cms-user', 'netlify-cms-user'];
-    for (var i = 0; i < keys.length; i++) {
-      try {
-        var raw = localStorage.getItem(keys[i]);
-        if (!raw) continue;
-        var u = JSON.parse(raw);
-        if (u && u.token) return u.token;
-      } catch (e) { /* malformed, ignore */ }
+     Decap/DecapBridge have used several storage keys across versions, and
+     PKCE login may differ again. Rather than guess a name, look through
+     everything in local and session storage for a credential. */
+  function dig(v) {
+    if (!v) return null;
+    if (typeof v === 'string') {
+      // a bare JWT, three dot-separated chunks
+      if (/^[\w-]+\.[\w-]+\.[\w-]+$/.test(v)) return v;
+      try { return dig(JSON.parse(v)); } catch (e) { return null; }
+    }
+    if (typeof v === 'object') {
+      var direct = v.token || v.access_token || v.jwt || v.id_token;
+      if (typeof direct === 'string' && direct.length > 20) return direct;
+      for (var k in v) { var found = dig(v[k]); if (found) return found; }
     }
     return null;
+  }
+
+  function token() {
+    var stores = [];
+    try { stores.push(localStorage); } catch (e) {}
+    try { stores.push(sessionStorage); } catch (e) {}
+    for (var s = 0; s < stores.length; s++) {
+      var store = stores[s];
+      for (var i = 0; i < store.length; i++) {
+        var key = store.key(i);
+        if (!/decap|netlify|cms|bridge|auth|user|token/i.test(key)) continue;
+        var found = dig(store.getItem(key));
+        if (found) return found;
+      }
+    }
+    return null;
+  }
+
+  /* Visit any page with ?edit=debug to see what the login actually left
+     behind. Prints keys only, never the credential itself. */
+  if (location.search.indexOf('edit=debug') > -1) {
+    var report = ['--- hekayat edit debug ---'];
+    ['localStorage', 'sessionStorage'].forEach(function (name) {
+      try {
+        var store = window[name];
+        report.push(name + ': ' + store.length + ' keys');
+        for (var i = 0; i < store.length; i++) {
+          var k = store.key(i);
+          report.push('   ' + k + '  ->  ' + (dig(store.getItem(k)) ? 'HAS a token' : 'no token'));
+        }
+      } catch (e) { report.push(name + ': blocked'); }
+    });
+    report.push('token found: ' + (token() ? 'YES' : 'NO'));
+    report.push('editable fields on this page: ' + document.querySelectorAll('[data-edit]').length);
+    alert(report.join('\n'));
+    console.log(report.join('\n'));
   }
 
   var fields = [].slice.call(document.querySelectorAll('[data-edit]'));

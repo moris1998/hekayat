@@ -36,7 +36,7 @@ const waNumber = CFG.whatsapp;
 /* schema.org wants HH:MM, but site.json stores the human form (7:30) */
 const pad = t => t.padStart(5, '0');
 /* Bump when css/js change, so a phone that cached the old files reloads them. */
-const ASSET_V = '5';
+const ASSET_V = '6';
 
 /* --------------------------------------------------------------- icons
    Stroke glyphs follow the Tabler Icons geometry (MIT), 24x24 grid,
