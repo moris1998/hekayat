@@ -1,0 +1,156 @@
+# لوحة تحكّم حضانة حكايات
+# Every label here is in Arabic on purpose: Sahera is the only person who
+# uses this panel. Field NAMES must stay in English, they map to the JSON
+# keys that build.js reads. Only labels and hints are translated.
+
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: 'إضافة {{collection}} من لوحة التحكّم'
+    update: 'تعديل {{collection}} من لوحة التحكّم'
+    delete: 'حذف {{collection}} من لوحة التحكّم'
+    uploadMedia: 'رفع صورة {{path}}'
+    deleteMedia: 'حذف صورة {{path}}'
+
+locale: ar
+
+# Photos she uploads land beside the ones already on the site.
+media_folder: assets/photos
+public_folder: assets/photos
+
+# Nothing is published until she presses Publish, so a half-finished edit
+# never reaches the live site.
+publish_mode: simple
+
+collections:
+  # ------------------------------------------------ حكمة الشهر
+  - name: wisdom
+    label: حكمة الشهر
+    files:
+      - name: wisdom
+        label: حكمة الشهر
+        file: content/wisdom.json
+        description: الجملة التي تظهر في صفحة «حكمة الشهر». غيّريها كل شهر.
+        fields:
+          - name: current
+            label: حكمة هذا الشهر
+            widget: object
+            fields:
+              - { name: month, label: رقم الشهر, widget: string, hint: 'مثال: 09' }
+              - { name: ar, label: الحكمة بالعربية, widget: text }
+              - { name: he, label: الحكمة بالعبرية, widget: text }
+              - { name: source_ar, label: المصدر بالعربية, widget: string, required: false }
+              - { name: source_he, label: المصدر بالعبرية, widget: string, required: false }
+          - name: archive
+            label: الأشهر الماضية
+            label_singular: حكمة
+            widget: list
+            required: false
+            summary: 'الشهر {{fields.month}} · {{fields.ar}}'
+            fields:
+              - { name: month, label: رقم الشهر, widget: string }
+              - { name: ar, label: الحكمة بالعربية, widget: text }
+              - { name: he, label: الحكمة بالعبرية, widget: text }
+
+  # ------------------------------------------------ معرض الصور
+  - name: gallery
+    label: معرض الصور
+    files:
+      - name: gallery
+        label: صور المعرض
+        file: content/gallery.json
+        description: أضيفي صورة، اكتبي وصفًا قصيرًا، واختاري القسم.
+        fields:
+          - name: photos
+            label: الصور
+            label_singular: صورة
+            widget: list
+            summary: '{{fields.ar}}'
+            fields:
+              - { name: src, label: الصورة, widget: image }
+              - name: cat
+                label: القسم
+                widget: select
+                options:
+                  - { label: الصفوف, value: rooms }
+                  - { label: الساحات والملاعب, value: yard }
+                  - { label: فعاليات, value: activities }
+                  - { label: حفلات ومناسبات, value: events }
+              - { name: ar, label: الوصف بالعربية, widget: string }
+              - { name: he, label: الوصف بالعبرية, widget: string }
+
+  # ------------------------------------------------ معلومات الحضانة
+  - name: site
+    label: معلومات الحضانة
+    files:
+      - name: site
+        label: أرقام الهاتف والعنوان والدوام
+        file: content/site.json
+        description: هذه المعلومات تظهر في أسفل كل صفحة وفي صفحة التواصل.
+        fields:
+          - { name: mobile, label: رقم الخليوي, widget: string }
+          - { name: phone, label: هاتف الحضانة, widget: string }
+          - { name: whatsapp, label: رقم الواتساب, widget: string, hint: 'بصيغة دولية بدون + مثال: 972526009826' }
+          - { name: facebook, label: رابط الفيسبوك, widget: string }
+          - { name: address_ar, label: العنوان بالعربية, widget: string }
+          - { name: address_he, label: العنوان بالعبرية, widget: string }
+          - { name: hours_ar, label: سطر الدوام بالعربية, widget: string }
+          - { name: hours_he, label: سطر الدوام بالعبرية, widget: string }
+          - { name: open_from, label: ساعة الفتح, widget: string, hint: 'مثال: 7:30' }
+          - { name: open_to, label: ساعة الإغلاق, widget: string, hint: 'مثال: 16:00' }
+          - name: days
+            label: أيام الأسبوع
+            widget: list
+            summary: '{{fields.ar}}'
+            fields:
+              - { name: ar, label: اليوم بالعربية, widget: string }
+              - { name: he, label: اليوم بالعبرية, widget: string }
+              - { name: open, label: مفتوح؟, widget: boolean, default: true }
+
+  # ------------------------------------------------ قوانين حكايات
+  - name: rules
+    label: قوانين حكايات
+    files:
+      - name: rules
+        label: بنود القوانين
+        file: content/rules.json
+        description: كل بند يظهر في صفحة «قوانين حكايات». الترتيب هنا هو الترتيب في الموقع.
+        fields:
+          - name: items
+            label: البنود
+            label_singular: بند
+            widget: list
+            summary: '{{fields.ar}}'
+            fields:
+              - { name: ar, label: عنوان البند بالعربية, widget: string }
+              - { name: he, label: عنوان البند بالعبرية, widget: string }
+              - { name: body_ar, label: النص بالعربية, widget: text }
+              - { name: body_he, label: النص بالعبرية, widget: text }
+
+  # ------------------------------------------------ البرنامج اليومي
+  - name: daily
+    label: البرنامج اليومي
+    files:
+      - name: daily
+        label: جدول اليوم
+        file: content/daily.json
+        description: ساعات اليوم كما تظهر في صفحة «برنامجنا اليومي».
+        fields:
+          - name: rows
+            label: الفقرات
+            label_singular: فقرة
+            widget: list
+            summary: '{{fields.from}} - {{fields.to}} · {{fields.ar}}'
+            fields:
+              - { name: from, label: من الساعة, widget: string }
+              - { name: to, label: حتى الساعة, widget: string }
+              - { name: ar, label: الاسم بالعربية, widget: string }
+              - { name: he, label: الاسم بالعبرية, widget: string }
+              - { name: note_ar, label: تفصيل بالعربية, widget: string, required: false }
+              - { name: note_he, label: تفصيل بالعبرية, widget: string, required: false }
+              - name: colour
+                label: اللون
+                widget: select
+                default: pink
+                options: [pink, blue, green, orange, cyan, purple, teal]
