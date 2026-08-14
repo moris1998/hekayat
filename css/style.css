@@ -800,3 +800,7 @@ html.hk-editing [data-edit].hk-changed{
 }
 .hk-login input:focus{outline:0;border-color:var(--pink)}
 .hk-login .hk-err{color:#b3261e;font-weight:700;min-height:1.3em;margin-top:.5rem}
+
+/* Google sign-in button, and the "or" divider under it */
+.hk-gbtn{display:flex;justify-content:center;margin:.4rem 0 .2rem;min-height:0}
+.hk-gbtn:not(:empty){margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--line)}

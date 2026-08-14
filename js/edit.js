@@ -142,6 +142,7 @@
     var form = document.createElement('div');
     form.className = 'hk-login';
     form.innerHTML =
+      '<div class="hk-gbtn"></div>' +
       '<label>' + t('email') + '</label>' +
       '<input type="email" autocomplete="username" inputmode="email" dir="ltr">' +
       '<label>' + t('pass') + '</label>' +
@@ -177,6 +178,47 @@
           err.textContent = t('wrong');
         });
     }
+    /* Google sign-in, when a client id has been configured. She taps her
+       existing account: no password to choose, forget or reset. */
+    var meta = document.querySelector('meta[name="google-client-id"]');
+    if (meta && meta.content) {
+      var slot = form.querySelector('.hk-gbtn');
+      var render = function () {
+        try {
+          google.accounts.id.initialize({
+            client_id: meta.content,
+            callback: function (resp) {
+              var err = form.querySelector('.hk-err'); err.textContent = '';
+              fetch('/.netlify/functions/auth', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ googleCredential: resp.credential })
+              }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+                .then(function (res) {
+                  if (!res.ok) { err.textContent = res.d.error || t('wrong'); return; }
+                  signIn(res.d.session, res.d.name);
+                  close(); form.remove(); ta.style.display = '';
+                  toast(t('hi') + ' ' + res.d.name);
+                  start();
+                })
+                .catch(function () { err.textContent = t('wrong'); });
+            }
+          });
+          google.accounts.id.renderButton(slot, {
+            theme: 'outline', size: 'large', shape: 'pill',
+            text: 'signin_with', locale: document.documentElement.lang, width: 300
+          });
+        } catch (e) { slot.remove(); }
+      };
+      if (window.google && google.accounts) render();
+      else {
+        var g = document.createElement('script');
+        g.src = 'https://accounts.google.com/gsi/client';
+        g.async = true; g.defer = true; g.onload = render;
+        g.onerror = function () { slot.remove(); };
+        document.head.appendChild(g);
+      }
+    }
+
     inputs[1].onkeydown = function (e) { if (e.key === 'Enter') attempt(); };
     sheet.querySelector('.hk-ok').onclick = attempt;
     sheet.querySelector('.hk-no').onclick = function () {

@@ -36,7 +36,7 @@ const waNumber = CFG.whatsapp;
 /* schema.org wants HH:MM, but site.json stores the human form (7:30) */
 const pad = t => t.padStart(5, '0');
 /* Bump when css/js change, so a phone that cached the old files reloads them. */
-const ASSET_V = '8';
+const ASSET_V = '9';
 
 /* --------------------------------------------------------------- icons
    Stroke glyphs follow the Tabler Icons geometry (MIT), 24x24 grid,
@@ -255,7 +255,7 @@ function layout(p){
 <title>${title.ar}</title>
 <meta name="description" content="${p.desc.ar}">
 <meta name="theme-color" content="#e8117c">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="light">${process.env.GOOGLE_CLIENT_ID ? `\n<meta name="google-client-id" content="${process.env.GOOGLE_CLIENT_ID}">` : ''}
 <meta name="supported-color-schemes" content="light">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
