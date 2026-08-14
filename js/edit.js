@@ -19,92 +19,40 @@
 (function () {
   'use strict';
 
-  var GATEWAY = 'https://gateway.decapbridge.com';
-  var BRANCH  = 'main';
-
-  /* ---------------------------------------------------------- token
-     Decap/DecapBridge have used several storage keys across versions, and
-     PKCE login may differ again. Rather than guess a name, look through
-     everything in local and session storage for a credential. */
-  function dig(v) {
-    if (!v) return null;
-    if (typeof v === 'string') {
-      // a bare JWT, three dot-separated chunks
-      if (/^[\w-]+\.[\w-]+\.[\w-]+$/.test(v)) return v;
-      try { return dig(JSON.parse(v)); } catch (e) { return null; }
-    }
-    if (typeof v === 'object') {
-      var direct = v.token || v.access_token || v.jwt || v.id_token;
-      if (typeof direct === 'string' && direct.length > 20) return direct;
-      for (var k in v) { var found = dig(v[k]); if (found) return found; }
-    }
-    return null;
+  /* ------------------------------------------------------------ session
+     Her login lives here, on the site. It is a signed token from our own
+     auth function, kept in localStorage so she stays logged in for months
+     rather than every five minutes. It carries no password and cannot be
+     edited: the signature is checked on the server for every save. */
+  var KEY = 'hk-session';
+  function session() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function signIn(tok, name) {
+    try { localStorage.setItem(KEY, tok); localStorage.setItem('hk-who', name || ''); } catch (e) {}
   }
-
-  function token() {
-    var stores = [];
-    try { stores.push(localStorage); } catch (e) {}
-    try { stores.push(sessionStorage); } catch (e) {}
-    for (var s = 0; s < stores.length; s++) {
-      var store = stores[s];
-      for (var i = 0; i < store.length; i++) {
-        var key = store.key(i);
-        if (!/decap|netlify|cms|bridge|auth|user|token/i.test(key)) continue;
-        var found = dig(store.getItem(key));
-        if (found) return found;
-      }
-    }
-    return null;
+  function signOut() {
+    try { localStorage.removeItem(KEY); localStorage.removeItem('hk-who'); } catch (e) {}
+    location.reload();
   }
-
-  /* Visit any page with ?edit=debug to see what the login actually left
-     behind. Prints structure only, never a credential value. */
-  if (location.search.indexOf('edit=debug') > -1) {
-    var report = ['--- hekayat edit debug ---'];
-    function shape(raw, indent) {
-      var out = [];
-      var v; try { v = JSON.parse(raw); } catch (e) { return [indent + '(plain string, ' + String(raw).length + ' chars)']; }
-      if (v === null || typeof v !== 'object') return [indent + '(' + typeof v + ')'];
-      for (var k in v) {
-        var t = typeof v[k];
-        var d = t === 'string' ? 'string(' + v[k].length + ')' : (t === 'object' && v[k] ? 'object' : t);
-        out.push(indent + k + ' : ' + d);
-      }
-      if (!out.length) out.push(indent + '(empty object)');
-      return out;
-    }
-    ['localStorage', 'sessionStorage'].forEach(function (name) {
-      try {
-        var store = window[name];
-        report.push(name + ': ' + store.length + ' keys');
-        for (var i = 0; i < store.length; i++) {
-          var k = store.key(i);
-          report.push(' ' + k + (dig(store.getItem(k)) ? '  [TOKEN]' : ''));
-          if (/user|auth|token|bridge/i.test(k)) report = report.concat(shape(store.getItem(k), '     '));
-        }
-      } catch (e) { report.push(name + ': blocked'); }
-    });
-    report.push('cookies: ' + (document.cookie ? document.cookie.split(';').map(function(c){return c.split('=')[0].trim()}).join(', ') : 'none'));
-    report.push('token found: ' + (token() ? 'YES' : 'NO'));
-    report.push('editable fields: ' + document.querySelectorAll('[data-edit]').length);
-    alert(report.join('\n'));
-    console.log(report.join('\n'));
-  }
+  function who() { try { return localStorage.getItem('hk-who') || ''; } catch (e) { return ''; } }
 
   var fields = [].slice.call(document.querySelectorAll('[data-edit]'));
   if (!fields.length) return;                 // nothing editable on this page
-  if (!token() && location.search.indexOf('edit') === -1) return;  // a visitor
+  if (!session() && location.search.indexOf('login') === -1) return;  // a visitor
 
   var L = function () { return document.documentElement.lang === 'he' ? 'he' : 'ar'; };
   var T = {
     ar: { edit:'تعديل', save:'حفظ التغييرات', cancel:'إلغاء', done:'تم',
           back:'رجوع', saving:'جاري الحفظ...', ok:'تم الحفظ! الموقع بيتحدّث خلال دقيقة',
           fail:'ما زبط الحفظ. جرّبي كمان مرّة.', login:'سجّلي الدخول أولًا',
-          none:'ما في تغييرات', which:'هذا النص يظهر في الموقع' },
+          none:'ما في تغييرات', which:'هذا النص يظهر في الموقع',
+          signin:'تسجيل الدخول', signout:'خروج', email:'الإيميل', pass:'كلمة السر',
+          enter:'دخول', wrong:'الإيميل أو كلمة السر غير صحيحة', hi:'أهلًا' },
     he: { edit:'עריכה', save:'שמירת שינויים', cancel:'ביטול', done:'סיום',
           back:'חזרה', saving:'שומר...', ok:'נשמר! האתר יתעדכן תוך דקה',
           fail:'השמירה נכשלה. נסי שוב.', login:'התחברי קודם',
-          none:'אין שינויים', which:'הטקסט הזה מופיע באתר' }
+          none:'אין שינויים', which:'הטקסט הזה מופיע באתר',
+          signin:'התחברות', signout:'יציאה', email:'אימייל', pass:'סיסמה',
+          enter:'כניסה', wrong:'אימייל או סיסמה שגויים', hi:'שלום' }
   };
   var t = function (k) { return T[L()][k]; };
 
@@ -150,8 +98,10 @@
 
   function paintFab() {
     if (!editing) {
-      fab.innerHTML = '<button class="hk-go">' + ICON_PEN + '<span>' + t('edit') + '</span></button>';
+      fab.innerHTML = '<button class="hk-go">' + ICON_PEN + '<span>' + t('edit') + '</span></button>' +
+        (session() ? '<button class="hk-cancel hk-out">' + t('signout') + '</button>' : '');
       fab.querySelector('.hk-go').onclick = start;
+      var out = fab.querySelector('.hk-out'); if (out) out.onclick = signOut;
       return;
     }
     var n = count();
@@ -163,7 +113,7 @@
   }
 
   function start() {
-    if (!token()) { toast(t('login'), true); setTimeout(function(){ location.href = '/admin/'; }, 1200); return; }
+    if (!session()) { showLogin(); return; }
     editing = true;
     document.documentElement.classList.add('hk-editing');
     paintFab();
@@ -181,6 +131,57 @@
       }
     });
     paintFab();
+  }
+
+  /* ------------------------------------------------------------ login
+     Shown on the site itself. No redirect to any panel. */
+  function showLogin() {
+    sheet.querySelector('.hk-sheet__label').textContent = t('signin');
+    sheet.querySelector('.hk-sheet__which').textContent = '';
+    var panel = sheet.querySelector('.hk-sheet__panel');
+    var form = document.createElement('div');
+    form.className = 'hk-login';
+    form.innerHTML =
+      '<label>' + t('email') + '</label>' +
+      '<input type="email" autocomplete="username" inputmode="email" dir="ltr">' +
+      '<label>' + t('pass') + '</label>' +
+      '<input type="password" autocomplete="current-password" dir="ltr">' +
+      '<p class="hk-err"></p>';
+    ta.style.display = 'none';
+    var old = panel.querySelector('.hk-login'); if (old) old.remove();
+    panel.insertBefore(form, panel.querySelector('.hk-sheet__row'));
+    sheet.querySelector('.hk-ok').textContent = t('enter');
+    sheet.querySelector('.hk-no').textContent = t('back');
+    sheet.classList.add('open');
+    var inputs = form.querySelectorAll('input');
+    setTimeout(function () { inputs[0].focus(); }, 250);
+
+    function attempt() {
+      var err = form.querySelector('.hk-err');
+      err.textContent = '';
+      sheet.querySelector('.hk-ok').disabled = true;
+      fetch('/.netlify/functions/auth', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: inputs[0].value, password: inputs[1].value })
+      }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          sheet.querySelector('.hk-ok').disabled = false;
+          if (!res.ok) { err.textContent = t('wrong'); return; }
+          signIn(res.d.session, res.d.name);
+          close(); form.remove(); ta.style.display = '';
+          toast(t('hi') + ' ' + res.d.name);
+          start();
+        })
+        .catch(function () {
+          sheet.querySelector('.hk-ok').disabled = false;
+          err.textContent = t('wrong');
+        });
+    }
+    inputs[1].onkeydown = function (e) { if (e.key === 'Enter') attempt(); };
+    sheet.querySelector('.hk-ok').onclick = attempt;
+    sheet.querySelector('.hk-no').onclick = function () {
+      close(); form.remove(); ta.style.display = '';
+    };
   }
 
   /* --------------------------------------------------- open the sheet */
@@ -226,61 +227,25 @@
   /* --------------------------------------------------------- saving
      The DecapBridge gateway speaks the GitHub contents API, so this is
      read file -> patch the key -> write file, once per touched file. */
-  function api(path, opts) {
-    opts = opts || {};
-    opts.headers = Object.assign({ Authorization: 'Bearer ' + token(),
-                                   'Content-Type': 'application/json' }, opts.headers || {});
-    return fetch(GATEWAY + '/github/contents/' + path + (opts.q || ''), opts)
-      .then(function (r) {
-        if (!r.ok) throw new Error(path + ' -> ' + r.status);
-        return r.json();
+  /* The GitHub token is not in the browser at all. We hand our changes to
+     our own function, which checks the session and does the commit. */
+  function push(changes) {
+    return fetch('/.netlify/functions/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session: session(), changes: changes })
+    }).then(function (r) {
+      return r.json().then(function (data) {
+        if (!r.ok) throw new Error(data.error || ('save ' + r.status));
+        return data;
       });
-  }
-
-  function setDeep(obj, dotted, value) {
-    var parts = dotted.split('.'), cur = obj;
-    for (var i = 0; i < parts.length - 1; i++) cur = cur[parts[i]];
-    cur[parts[parts.length - 1]] = value;
-  }
-
-  /* base64 that survives Arabic and Hebrew (btoa alone does not) */
-  function b64(str) {
-    var bytes = new TextEncoder().encode(str), bin = '';
-    bytes.forEach(function (b) { bin += String.fromCharCode(b); });
-    return btoa(bin);
-  }
-  function unb64(str) {
-    var bin = atob(str.replace(/\n/g, '')), bytes = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-    return new TextDecoder().decode(bytes);
-  }
-
-  function saveFile(file, edits) {
-    var path = 'content/' + file;
-    return api(path, { q: '?ref=' + BRANCH }).then(function (meta) {
-      var json = JSON.parse(unb64(meta.content));
-      for (var key in edits) setDeep(json, key, edits[key]);
-      return fetch(GATEWAY + '/github/contents/' + path, {
-        method: 'PUT',
-        headers: { Authorization: 'Bearer ' + token(), 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          branch: BRANCH,
-          message: 'تعديل ' + file + ' من الموقع',
-          content: b64(JSON.stringify(json, null, 2) + '\n'),
-          sha: meta.sha
-        })
-      }).then(function (r) { if (!r.ok) throw new Error(path + ' PUT ' + r.status); });
     });
   }
 
   function save() {
     if (!count()) { toast(t('none')); return; }
     fab.innerHTML = '<button class="hk-save">' + t('saving') + '</button>';
-    var files = Object.keys(changes);
-    // one file at a time: each write needs the sha from its own read
-    files.reduce(function (chain, f) {
-      return chain.then(function () { return saveFile(f, changes[f]); });
-    }, Promise.resolve())
+    push(changes)
       .then(function () {
         changes = {};
         editing = false;

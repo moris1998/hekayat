@@ -791,3 +791,12 @@ html.hk-editing [data-edit].hk-changed{
 @media (prefers-reduced-motion:reduce){
   .hk-sheet__panel,.hk-toast{animation:none}
 }
+
+/* login form inside the bottom sheet */
+.hk-login label{display:block;font-family:var(--font-display);font-weight:700;margin:.7rem 0 .3rem}
+.hk-login input{
+  width:100%;padding:.85rem 1rem;font-size:16px;   /* 16px stops iOS zooming */
+  border:2.5px solid var(--line);border-radius:var(--r-input);background:var(--surface);
+}
+.hk-login input:focus{outline:0;border-color:var(--pink)}
+.hk-login .hk-err{color:#b3261e;font-weight:700;min-height:1.3em;margin-top:.5rem}

@@ -117,17 +117,64 @@ edit a stale copy and hit a merge conflict.
 
 # Tap-to-edit on the site itself
 
-Alongside the `/admin` panel, Sahera can edit the site **while looking at it**.
+She logs in **on the site**. No panel, no redirect.
 
-1. She logs in once at **hekayatz.netlify.app/admin** (this is what leaves a
-   token in her browser).
-2. She browses the site normally. A **«تعديل»** button sits at the bottom.
-3. She taps it. Every editable sentence gets a dashed outline.
-4. She taps a sentence, changes it in the sheet that slides up, presses **تم**.
-5. When she's finished, **حفظ التغييرات**. Netlify rebuilds, live in ~1 minute.
+## One-time setup
 
-**«إلغاء» throws away everything** she changed since turning editing on, and
-puts the original text back. Nothing is written until she presses save.
+### 1. Make a login for each person
+
+```bash
+node tools/make-user.js sahera@example.com "her password" ساهرة
+```
+
+It prints one line. The password itself is never stored, only a scrypt hash.
+Run it once per person and join the lines with commas.
+
+### 2. Make a signing secret
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+### 3. Put four values in Netlify
+
+**Project configuration → Environment variables → Add a variable**
+
+| Name | Value |
+|---|---|
+| `EDIT_USERS` | the line(s) from step 1, comma-separated |
+| `EDIT_SECRET` | the string from step 2 |
+| `GITHUB_TOKEN` | fine-grained PAT: only the `hekayat` repo, Contents + Pull requests = read and write |
+| `GITHUB_REPO` | `moris1998/hekayat` |
+
+These live only in Netlify. **None are in this repo and none reach the
+browser** — the GitHub token never leaves the server, so a visitor cannot
+find it however hard they look.
+
+### 4. Push, and wait for the deploy
+
+## How she uses it
+
+1. Opens **hekayatz.netlify.app** on her phone
+2. Presses **«تعديل»** at the bottom
+3. First time only: types her email and password right there on the page
+4. Taps any outlined sentence, changes it, presses **تم**
+5. **حفظ التغييرات** when done. Live in about a minute.
+
+She stays logged in for **90 days**. A **«خروج»** button sits beside the edit
+button when she wants out.
+
+## Who can edit
+
+Only the people listed in `EDIT_USERS`. There is no sign-up. Adding someone
+means adding a line; removing someone means deleting their line, and they are
+locked out on their next save.
+
+## The old /admin panel
+
+Still there, still works, now optional. Use it for **photo uploads**, which
+tap-to-edit does not cover yet. For text, the site itself is nicer.
+
 
 ## What is editable this way
 
