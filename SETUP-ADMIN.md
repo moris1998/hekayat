@@ -11,47 +11,31 @@
 
 ---
 
-## Step 1 — Create the site on DecapBridge
+## Done already
 
-1. Go to **decapbridge.com** and sign up (free tier covers 3 sites and
-   10 users, we need 1 and 2).
-2. Create a new site and connect it to the GitHub repo **`moris1998/hekayat`**,
-   branch **`main`**. It will ask permission to access the repo; allow it.
-3. It gives you a **site id** and an `identity_url` that looks like
-   `https://auth.decapbridge.com/sites/xxxxxxxx-xxxx-...`
+- ✅ GitHub repo `moris1998/hekayat`
+- ✅ Netlify building from it with `node build.js`
+- ✅ DecapBridge site created, config pasted into `admin/config.yml`
 
-**Copy that URL.**
+## Step 1 — Push
 
-## Step 2 — Paste it into the config
-
-Open `admin/config.yml`, find this line near the top:
-
-```
-  identity_url: https://auth.decapbridge.com/sites/YOUR-SITE-ID
-```
-
-Replace `YOUR-SITE-ID` with the id from step 1. Leave `gateway_url` as is.
-
-Send me the URL and I'll do it, or edit it yourself and save.
-
-## Step 3 — Push
-
-In GitHub Desktop: **Commit to main** → **Push origin**.
-
+In GitHub Desktop: **Commit to main**, then **Push origin**.
 Netlify rebuilds in about a minute.
 
-## Step 4 — Test it yourself first
+## Step 2 — Test it yourself
 
-Go to **hekayatz.netlify.app/admin** and log in with your DecapBridge account.
+Open **hekayatz.netlify.app/admin** and log in with your DecapBridge account.
 
 Change حكمة الشهر to anything, press **Publish**, wait a minute, then open
-**hekayatz.netlify.app/wisdom.html**. If the quote changed, the whole chain works.
+**hekayatz.netlify.app/wisdom.html**. If the quote changed, the whole chain
+works: panel → GitHub → Netlify → live page.
 
-**Do not hand this to Sahera until you've seen that work.**
+**Do not hand this to Sahera until you have seen that work.**
 
-## Step 5 — Invite her
+## Step 3 — Invite her
 
-In DecapBridge, invite her by email. She gets a link, sets a password, done.
+DecapBridge dashboard → **Manage collaborators** → invite by email.
+She gets a link, sets a password, done.
 
 Then send her:
 
@@ -59,6 +43,14 @@ Then send her:
 >
 > ادخلي بالإيميل وكلمة السر اللي عملتيها.
 > بعد أي تعديل اضغطي **Publish** ثم **Publish now** — الموقع بيتحدّث لحاله خلال دقيقة.
+
+## The GitHub token
+
+DecapBridge holds a GitHub token for this repo. It is **not** in this repo and
+must never be. If the panel suddenly stops saving, the token has most likely
+expired: generate a new fine-grained one (only the `hekayat` repo, Contents and
+Pull requests set to read and write) and paste it into the DecapBridge site
+settings.
 
 ---
 

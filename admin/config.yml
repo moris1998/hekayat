@@ -5,23 +5,35 @@
 
 # Auth runs through DecapBridge. Netlify Identity was deprecated in Feb 2025
 # and is no longer offered on new sites, and Git Gateway went with it.
-# DecapBridge is the drop-in replacement: Sahera logs in with an email and
-# password and never needs a GitHub account.
+# DecapBridge is the replacement: Sahera logs in with an email and password
+# and never needs a GitHub account.
 #
-# TODO before this works: create the site at decapbridge.com and paste the
-# site id it gives you into identity_url below, replacing YOUR-SITE-ID.
+# These endpoints come from the DecapBridge dashboard for this site. The id
+# is not a secret (this file is served publicly); the GitHub token that backs
+# it lives only in DecapBridge and must never appear in this repo.
 backend:
   name: git-gateway
   repo: moris1998/hekayat
   branch: main
-  identity_url: https://auth.decapbridge.com/sites/YOUR-SITE-ID
+  auth_type: pkce
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/541c47cc-d101-4611-a455-c51f71a1d9be/pkce
+  auth_token_endpoint: /sites/541c47cc-d101-4611-a455-c51f71a1d9be/token
   gateway_url: https://gateway.decapbridge.com
+  # Arabic messages, but keeping DecapBridge's author attribution so the
+  # GitHub history shows who made each change.
   commit_messages:
-    create: 'إضافة {{collection}} من لوحة التحكّم'
-    update: 'تعديل {{collection}} من لوحة التحكّم'
-    delete: 'حذف {{collection}} من لوحة التحكّم'
-    uploadMedia: 'رفع صورة {{path}}'
-    deleteMedia: 'حذف صورة {{path}}'
+    create: 'إضافة {{collection}} - {{author-name}}'
+    update: 'تعديل {{collection}} - {{author-name}}'
+    delete: 'حذف {{collection}} - {{author-name}}'
+    uploadMedia: 'رفع صورة {{path}} - {{author-name}}'
+    deleteMedia: 'حذف صورة {{path}} - {{author-name}}'
+
+# PKCE identity fields
+auth:
+  email_claim: email
+  first_name_claim: first_name
+  last_name_claim: last_name
 
 locale: ar
 
