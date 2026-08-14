@@ -22,7 +22,8 @@
   </div>
   <!-- Auth is handled by DecapBridge (see admin/config.yml). The old
        netlify-identity-widget script is gone: Netlify Identity was
-       deprecated in February 2025. -->
-  <script src="https://unpkg.com/decap-cms@^3.1.10/dist/decap-cms.js"></script>
+       deprecated in February 2025.
+       Version must stay >= 3.8.3, which is what DecapBridge PKCE login needs. -->
+  <script src="https://unpkg.com/decap-cms@^3.8.3/dist/decap-cms.js"></script>
 </body>
 </html>
