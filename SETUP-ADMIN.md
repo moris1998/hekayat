@@ -1,58 +1,83 @@
-# Connecting the admin panel (one-time, ~10 minutes)
+# Connecting the admin panel
 
-The site currently reaches Netlify by drag-and-drop. That has to change: the
-panel saves edits into the repo, and Netlify has to rebuild when it does.
-Do these five steps once and Sahera never needs you again for content.
+**Status:** GitHub ✅ · Netlify build ✅ · Login ⬅ you are here
+
+> **Why this changed:** the original plan used Netlify Identity + Git Gateway.
+> Netlify **deprecated Identity in February 2025** and no longer offers it on
+> new sites, which is why "Identity" is missing from the Netlify menu. Git
+> Gateway went with it. We now use **DecapBridge**, the replacement built
+> specifically for Decap CMS. Sahera still logs in with just an email and
+> password, and still never needs a GitHub account.
 
 ---
 
-## 1. Push this folder to GitHub
+## Step 1 — Create the site on DecapBridge
 
-The repo is already initialised and committed. Create an empty repo on
-GitHub (private is fine), then:
+1. Go to **decapbridge.com** and sign up (free tier covers 3 sites and
+   10 users, we need 1 and 2).
+2. Create a new site and connect it to the GitHub repo **`moris1998/hekayat`**,
+   branch **`main`**. It will ask permission to access the repo; allow it.
+3. It gives you a **site id** and an `identity_url` that looks like
+   `https://auth.decapbridge.com/sites/xxxxxxxx-xxxx-...`
 
-```bash
-git remote add origin https://github.com/YOUR-USERNAME/hekayat.git
-git push -u origin main
+**Copy that URL.**
+
+## Step 2 — Paste it into the config
+
+Open `admin/config.yml`, find this line near the top:
+
+```
+  identity_url: https://auth.decapbridge.com/sites/YOUR-SITE-ID
 ```
 
-## 2. Point Netlify at the repo
+Replace `YOUR-SITE-ID` with the id from step 1. Leave `gateway_url` as is.
 
-In Netlify, open the **hekayatz** site → **Site configuration → Build & deploy
-→ Continuous deployment** → **Link repository**, and pick the GitHub repo.
+Send me the URL and I'll do it, or edit it yourself and save.
 
-Netlify reads `netlify.toml`, so the build command (`node build.js`) and
-publish directory (`.`) are already set. Don't type them by hand.
+## Step 3 — Push
 
-Deploy once and confirm https://hekayatz.netlify.app still looks right.
+In GitHub Desktop: **Commit to main** → **Push origin**.
 
-## 3. Turn on Netlify Identity
+Netlify rebuilds in about a minute.
 
-**Site configuration → Identity → Enable Identity.**
+## Step 4 — Test it yourself first
 
-Then under **Registration preferences** choose **Invite only**. This matters:
-without it, anyone on the internet could sign up and edit the site.
+Go to **hekayatz.netlify.app/admin** and log in with your DecapBridge account.
 
-## 4. Turn on Git Gateway
+Change حكمة الشهر to anything, press **Publish**, wait a minute, then open
+**hekayatz.netlify.app/wisdom.html**. If the quote changed, the whole chain works.
 
-**Identity → Services → Git Gateway → Enable.**
+**Do not hand this to Sahera until you've seen that work.**
 
-This is what lets the panel write to the repo without Sahera having a
-GitHub account.
+## Step 5 — Invite her
 
-## 5. Invite Sahera
+In DecapBridge, invite her by email. She gets a link, sets a password, done.
 
-**Identity → Invite users** → her email address. She gets an email, sets a
-password, and she's in.
+Then send her:
+
+> رابط لوحة التحكّم: **hekayatz.netlify.app/admin**
+>
+> ادخلي بالإيميل وكلمة السر اللي عملتيها.
+> بعد أي تعديل اضغطي **Publish** ثم **Publish now** — الموقع بيتحدّث لحاله خلال دقيقة.
 
 ---
 
-## Then send her this
+## If you'd rather not use a third party
 
-> رابط لوحة التحكّم: **https://hekayatz.netlify.app/admin**
->
-> ادخلي بالإيميل وكلمة السر اللي عملتيها.
-> بعد أي تعديل اضغطي **Publish** ثم **Publish now**، والموقع بيتحدّث لحاله خلال دقيقة.
+The alternative is Decap's **GitHub backend**: no DecapBridge, no extra
+service, authentication straight through GitHub. In `admin/config.yml`:
+
+```yaml
+backend:
+  name: github
+  repo: moris1998/hekayat
+  branch: main
+```
+
+The catch is that **Sahera would need her own GitHub account** and to be added
+as a collaborator on the repo. For a non-technical user that is a real hurdle,
+which is why DecapBridge is the recommendation. The tradeoff is one more
+service in the chain.
 
 ---
 
@@ -75,9 +100,8 @@ the panel, on purpose. Every string on this site exists twice, once in Arabic
 and once in Hebrew, and a page breaks if one half goes missing or if markup is
 pasted in. Those edits should keep coming through you.
 
-If she needs a specific paragraph to become editable, add it to a
-`content/*.json` file and a matching field in `admin/config.yml`. Do not
-hardcode it back into `build.js`.
+To expose a specific paragraph later: add it to a `content/*.json` file and a
+matching field in `admin/config.yml`. Do not hardcode it back into `build.js`.
 
 ## Two rules for you
 
@@ -86,11 +110,13 @@ hardcode it back into `build.js`.
 2. **Bump `ASSET_V` in `build.js`** whenever you change `css/style.css` or
    `js/site.js`, otherwise phones keep serving the cached copy.
 
-## Testing the panel locally
+## Before each working session
 
-Decap needs the Git Gateway, so the panel only fully works on the deployed
-site. Locally you can still edit `content/*.json` by hand and run:
+Press **Fetch origin** in GitHub Desktop, then:
 
 ```bash
-node build.js
+./sync.sh
 ```
+
+That pulls down anything Sahera published and rebuilds locally, so we never
+edit a stale copy and hit a merge conflict.

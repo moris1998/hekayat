@@ -20,18 +20,9 @@
   <div id="hint">
     بعد كل تعديل اضغطي <b>Publish</b> ثم <b>Publish now</b> &nbsp;·&nbsp; الموقع يتحدّث لوحده خلال دقيقة
   </div>
-
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <!-- Auth is handled by DecapBridge (see admin/config.yml). The old
+       netlify-identity-widget script is gone: Netlify Identity was
+       deprecated in February 2025. -->
   <script src="https://unpkg.com/decap-cms@^3.1.10/dist/decap-cms.js"></script>
-  <script>
-    /* Send a first-time user straight to the login instead of the site root. */
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on('init', user => {
-        if (!user) {
-          window.netlifyIdentity.on('login', () => { document.location.href = '/admin/'; });
-        }
-      });
-    }
-  </script>
 </body>
 </html>

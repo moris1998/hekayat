@@ -3,9 +3,19 @@
 # uses this panel. Field NAMES must stay in English, they map to the JSON
 # keys that build.js reads. Only labels and hints are translated.
 
+# Auth runs through DecapBridge. Netlify Identity was deprecated in Feb 2025
+# and is no longer offered on new sites, and Git Gateway went with it.
+# DecapBridge is the drop-in replacement: Sahera logs in with an email and
+# password and never needs a GitHub account.
+#
+# TODO before this works: create the site at decapbridge.com and paste the
+# site id it gives you into identity_url below, replacing YOUR-SITE-ID.
 backend:
   name: git-gateway
+  repo: moris1998/hekayat
   branch: main
+  identity_url: https://auth.decapbridge.com/sites/YOUR-SITE-ID
+  gateway_url: https://gateway.decapbridge.com
   commit_messages:
     create: 'إضافة {{collection}} من لوحة التحكّم'
     update: 'تعديل {{collection}} من لوحة التحكّم'
