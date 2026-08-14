@@ -112,3 +112,50 @@ Press **Fetch origin** in GitHub Desktop, then:
 
 That pulls down anything Sahera published and rebuilds locally, so we never
 edit a stale copy and hit a merge conflict.
+
+---
+
+# Tap-to-edit on the site itself
+
+Alongside the `/admin` panel, Sahera can edit the site **while looking at it**.
+
+1. She logs in once at **hekayatz.netlify.app/admin** (this is what leaves a
+   token in her browser).
+2. She browses the site normally. A **«تعديل»** button sits at the bottom.
+3. She taps it. Every editable sentence gets a dashed outline.
+4. She taps a sentence, changes it in the sheet that slides up, presses **تم**.
+5. When she's finished, **حفظ التغييرات**. Netlify rebuilds, live in ~1 minute.
+
+**«إلغاء» throws away everything** she changed since turning editing on, and
+puts the original text back. Nothing is written until she presses save.
+
+## What is editable this way
+
+Anything the build stamps with `data-edit`, currently:
+
+| Page | Editable |
+|---|---|
+| حكمة الشهر | the month's quote, its source, the whole archive |
+| قوانين حكايات | every rule title and body |
+| برنامجنا اليومي | every row: times, names, notes |
+| Footer, on every page | phones, address, the hours line |
+
+To make something else editable, wrap it in `te()` or `teb()` in `build.js`
+instead of `t()` or `tb()`, passing the file and the key path. Example:
+
+```js
+te('wisdom.json', 'current.ar', 'current.he', arText, heText)
+```
+
+The tap-to-edit layer needs nothing else: it reads those markers.
+
+## It is invisible to visitors
+
+`js/edit.js` exits immediately when there is no login token, before it touches
+the page. A parent never sees a button, and none of the edit markup renders
+(the CSS is all behind `html.hk-editing`, which only appears after login).
+
+## If saving ever fails
+
+Open the browser console. Errors are logged as `[hekayat edit]`. The usual
+cause is an expired login: she should visit `/admin` and log in again.

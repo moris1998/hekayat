@@ -706,3 +706,88 @@ html.js .rv.in{opacity:1;transform:none}
   .hdr,.ftr,.drawer,.lb{display:none}
   body{background:#fff;color:#000}
 }
+
+/* ============================================================
+   TAP-TO-EDIT  (only ever visible to a logged-in editor)
+   Sahera browses the real site on her phone, turns editing on,
+   taps any sentence, and changes it. Everything here is inert
+   for a normal visitor: none of it renders without .hk-editing
+   on <html>, which only edit.js adds after a valid login.
+   ============================================================ */
+
+/* floating control, thumb-reachable at the bottom of a phone screen */
+.hk-fab{
+  position:fixed;inset-inline-start:16px;bottom:16px;z-index:90;
+  display:flex;gap:.5rem;align-items:center;
+}
+.hk-fab button{
+  font-family:var(--font-display);font-weight:800;font-size:1rem;
+  border:3px solid transparent;border-radius:999px;padding:.85rem 1.35rem;
+  cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;
+  min-height:52px;                      /* comfortable tap target */
+  box-shadow:0 6px 0 0 rgba(0,0,0,.22),0 14px 24px -10px rgba(0,0,0,.4);
+  transition:transform .15s var(--ease);
+}
+.hk-fab button:active{transform:translateY(4px);box-shadow:0 2px 0 0 rgba(0,0,0,.22)}
+.hk-fab .hk-go{background:var(--pink-d);color:#fff}
+.hk-fab .hk-save{background:var(--green-d);color:#fff}
+.hk-fab .hk-cancel{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.hk-fab svg{width:20px;height:20px}
+
+/* every editable phrase gets a dashed hint while editing is on */
+html.hk-editing [data-edit]{
+  outline:2px dashed color-mix(in srgb,var(--pink) 60%,transparent);
+  outline-offset:3px;border-radius:4px;cursor:pointer;
+  transition:background .15s;
+}
+html.hk-editing [data-edit]:active{background:var(--sig-soft)}
+html.hk-editing [data-edit].hk-changed{
+  outline:2px solid var(--green-d);
+  background:color-mix(in srgb,var(--green) 16%,transparent);
+}
+
+/* bottom sheet: rises from the bottom, thumb-friendly */
+.hk-sheet{
+  position:fixed;inset:0;z-index:95;display:none;
+  background:rgba(20,14,10,.45);
+}
+.hk-sheet.open{display:block}
+.hk-sheet__panel{
+  position:absolute;inset-inline:0;bottom:0;
+  background:var(--bg);border-radius:26px 26px 0 0;
+  padding:1.1rem 1.1rem calc(1.1rem + env(safe-area-inset-bottom));
+  max-height:88vh;overflow-y:auto;
+  box-shadow:0 -12px 40px -12px rgba(0,0,0,.4);
+  animation:hk-rise .28s var(--ease);
+}
+@keyframes hk-rise{from{transform:translateY(100%)}to{transform:none}}
+.hk-sheet__grip{width:44px;height:5px;border-radius:99px;background:var(--line);margin:0 auto .9rem}
+.hk-sheet__label{font-family:var(--font-display);font-weight:800;font-size:1.05rem;margin-bottom:.15rem}
+.hk-sheet__which{font-size:.85rem;color:var(--ink-2);margin-bottom:.8rem}
+.hk-sheet textarea{
+  width:100%;min-height:130px;padding:.9rem 1rem;
+  border:2.5px solid var(--line);border-radius:var(--r-input);
+  background:var(--surface);font-size:16px;   /* 16px stops iOS zooming on focus */
+  line-height:1.7;resize:vertical;
+}
+.hk-sheet textarea:focus{outline:0;border-color:var(--pink)}
+.hk-sheet__row{display:flex;gap:.6rem;margin-top:.9rem}
+.hk-sheet__row button{
+  flex:1;min-height:52px;border-radius:999px;border:3px solid transparent;
+  font-family:var(--font-display);font-weight:800;font-size:1rem;cursor:pointer;
+}
+.hk-ok{background:var(--pink-d);color:#fff}
+.hk-no{background:var(--surface);color:var(--ink);border-color:var(--line)}
+
+/* toast */
+.hk-toast{
+  position:fixed;inset-inline:16px;bottom:84px;z-index:99;
+  background:var(--ink);color:var(--bg);padding:1rem 1.2rem;border-radius:18px;
+  font-family:var(--font-display);font-weight:700;text-align:center;
+  box-shadow:var(--shadow-l);animation:hk-rise .25s var(--ease);
+}
+.hk-toast--bad{background:#b3261e;color:#fff}
+
+@media (prefers-reduced-motion:reduce){
+  .hk-sheet__panel,.hk-toast{animation:none}
+}

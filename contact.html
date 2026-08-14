@@ -19,7 +19,7 @@
 <meta property="og:locale:alternate" content="he_IL">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 <script>/* set language + theme before paint, avoids any flash */
 (function(){try{
   document.documentElement.className+=' js';
@@ -186,10 +186,10 @@
       <div>
         <h4 data-lang="ar">تواصلوا معنا</h4><h4 data-lang="he">צרו קשר</h4>
         <ul>
-          <li><a href="tel:0526009826" style="direction:ltr;display:inline-block">052-6009826</a></li>
-          <li><a href="tel:049860515" style="direction:ltr;display:inline-block">04-9860515</a></li>
-          <li><span data-lang="ar">شارع منصور أرملي 18، حي باب الدير، شفاعمرو</span><span data-lang="he">רחוב מנצור ארמלי 18, שכונת באב אל-דיר, שפרעם</span></li>
-          <li><span data-lang="ar">الإثنين حتى الجمعة، 7:30 حتى 16:00</span><span data-lang="he">שני עד שישי, 7:30 עד 16:00</span></li>
+          <li><a href="tel:0526009826" style="direction:ltr;display:inline-block" data-edit="site.json:mobile">052-6009826</a></li>
+          <li><a href="tel:049860515" style="direction:ltr;display:inline-block" data-edit="site.json:phone">04-9860515</a></li>
+          <li><span data-lang="ar" data-edit="site.json:address_ar">شارع منصور أرملي 18، حي باب الدير، شفاعمرو</span><span data-lang="he" data-edit="site.json:address_he">רחוב מנצור ארמלי 18, שכונת באב אל-דיר, שפרעם</span></li>
+          <li><span data-lang="ar" data-edit="site.json:hours_ar">الإثنين حتى الجمعة، 7:30 حتى 16:00</span><span data-lang="he" data-edit="site.json:hours_he">שני עד שישי, 7:30 עד 16:00</span></li>
         </ul>
       </div>
     </div>
@@ -203,6 +203,7 @@
   <button class="lb__x" data-lb-close aria-label="إغلاق"><svg class="" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
   <div><img id="lb-img" src="" alt=""><p class="lb__cap" id="lb-cap"></p></div>
 </div>
-<script src="js/site.js?v=4"></script>
+<script src="js/site.js?v=5"></script>
+<script src="js/edit.js?v=5" defer></script>
 </body>
 </html>

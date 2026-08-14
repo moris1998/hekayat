@@ -1,6 +1,6 @@
 /* حضانة حكايات - pages 2..15. Run `node build.js`. */
 const B = require('./build.js');
-const { SITE, AGES, CREATURE, CFG, WISDOM, GALLERY, svg, t, tb, href, layout, banner, doodle, photo, waNumber, OUT, fs, path } = B;
+const { SITE, AGES, CREATURE, CFG, WISDOM, GALLERY, svg, t, tb, te, teb, href, layout, banner, doodle, photo, waNumber, OUT, fs, path } = B;
 
 /* a visible marker for copy I drafted rather than took from the brochure,
    so the client knows exactly what still needs their approval */
@@ -327,9 +327,9 @@ P.push({ slug:'daily', sig:'orange',
   <div class="wrap">
     <div class="sec-head">${tb('h2','يوم في حكايات','יום בחכאיאת')}</div>
     <div class="tl">
-      ${DAY.map(d=>`<div class="tl__item rv" style="--c:var(--${d.colour})">
-        <div class="tl__time" dir="ltr">${d.from} - ${d.to}</div>
-        ${tb('h4',d.ar,d.he)}${d.note_ar?tb('p',d.note_ar,d.note_he):''}</div>`).join('')}
+      ${DAY.map((d,i)=>`<div class="tl__item rv" style="--c:var(--${d.colour})">
+        <div class="tl__time" dir="ltr"><span data-edit="daily.json:rows.${i}.from">${d.from}</span> - <span data-edit="daily.json:rows.${i}.to">${d.to}</span></div>
+        ${teb('h4','daily.json',`rows.${i}.ar`,`rows.${i}.he`,d.ar,d.he)}${d.note_ar?teb('p','daily.json',`rows.${i}.note_ar`,`rows.${i}.note_he`,d.note_ar,d.note_he):''}</div>`).join('')}
     </div>
     ${draft('هذا هو برنامج صفّ الصيصان. لكل صفّ إيقاعه الخاص القريب منه، ويمكننا إضافة جدول لكل مجموعة على حدة إذا رغبتم.','זהו לוח הזמנים של כיתת ציסאן. לכל כיתה קצב משלה, ונשמח להוסיף לוח נפרד לכל קבוצה אם תרצו.')}
   </div>
@@ -419,8 +419,8 @@ P.push({ slug:'rules', sig:'blue',
 <section class="section">
   <div class="wrap" style="max-width:860px">
     ${RULES.map((r,i)=>`<div class="acc rv">
-      <button class="acc__btn" aria-expanded="${i===0}"><span class="acc__num">${i+1}</span>${t(r.ar,r.he)}${svg('down','chev')}</button>
-      <div class="acc__panel" data-open="${i===0}"><div><div class="acc__body">${t(r.body_ar,r.body_he)}</div></div></div>
+      <button class="acc__btn" aria-expanded="${i===0}"><span class="acc__num">${i+1}</span>${te('rules.json',`items.${i}.ar`,`items.${i}.he`,r.ar,r.he)}${svg('down','chev')}</button>
+      <div class="acc__panel" data-open="${i===0}"><div><div class="acc__body">${te('rules.json',`items.${i}.body_ar`,`items.${i}.body_he`,r.body_ar,r.body_he)}</div></div></div>
     </div>`).join('')}
     ${draft('هذه القوانين صيغة مقترحة مبنية على ما هو معتاد في الحضانات. راجعوها معنا وسنعدّلها لتطابق قوانينكم بالضبط.','הנהלים כאן הם נוסח מוצע המבוסס על המקובל במעונות. עברו עליהם אתנו ונתאים אותם במדויק לנהלים שלכם.')}
   </div>
@@ -479,9 +479,9 @@ P.push({ slug:'wisdom', sig:'pink',
       <span class="quote__mark" style="inset-inline-start:auto;inset-inline-end:2rem">”</span>
       <div style="position:relative;z-index:1">
         <div style="font-weight:700;opacity:.85;margin-bottom:1rem">${t('حكمة هذا الشهر','חוכמת החודש הזה')}</div>
-        <blockquote data-lang="ar" style="margin-inline:auto">${WISDOM.current.ar}</blockquote>
-        <blockquote data-lang="he" style="margin-inline:auto">${WISDOM.current.he}</blockquote>
-        ${WISDOM.current.source_ar ? `<cite>${t(WISDOM.current.source_ar, WISDOM.current.source_he)}</cite>` : ''}
+        <blockquote data-lang="ar" style="margin-inline:auto" data-edit="wisdom.json:current.ar">${WISDOM.current.ar}</blockquote>
+        <blockquote data-lang="he" style="margin-inline:auto" data-edit="wisdom.json:current.he">${WISDOM.current.he}</blockquote>
+        ${WISDOM.current.source_ar ? `<cite>${te('wisdom.json','current.source_ar','current.source_he',WISDOM.current.source_ar, WISDOM.current.source_he)}</cite>` : ''}
       </div>
     </div>
   </div>
@@ -493,7 +493,7 @@ P.push({ slug:'wisdom', sig:'pink',
     <div class="cards cols-3">
       ${WISDOM.archive.map((w,i)=>`<div class="card rv" style="border-top:5px solid var(--${['blue','green','orange','purple','teal','cyan'][i%6]})">
         <div style="color:var(--ink-2);font-size:.85rem;font-weight:700;margin-bottom:.6rem">${t('الشهر','חודש')} ${w.month}</div>
-        <p style="font-family:var(--font-display);font-weight:700;font-size:1.12rem;line-height:1.55;color:var(--ink)">${t(w.ar,w.he)}</p>
+        <p style="font-family:var(--font-display);font-weight:700;font-size:1.12rem;line-height:1.55;color:var(--ink)">${te('wisdom.json',`archive.${i}.ar`,`archive.${i}.he`,w.ar,w.he)}</p>
       </div>`).join('')}
     </div>
     ${draft('نرسل لكم حكمة كل شهر لتضعوها هنا. يمكننا أيضًا إضافتها تلقائيًا إلى صفحة الفيسبوك في نفس اليوم.','נשמח לקבל מכם את החוכמה מדי חודש כדי להציב אותה כאן. אפשר גם לפרסם אותה אוטומטית בעמוד הפייסבוק באותו יום.')}

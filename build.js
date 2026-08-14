@@ -36,7 +36,7 @@ const waNumber = CFG.whatsapp;
 /* schema.org wants HH:MM, but site.json stores the human form (7:30) */
 const pad = t => t.padStart(5, '0');
 /* Bump when css/js change, so a phone that cached the old files reloads them. */
-const ASSET_V = '4';
+const ASSET_V = '5';
 
 /* --------------------------------------------------------------- icons
    Stroke glyphs follow the Tabler Icons geometry (MIT), 24x24 grid,
@@ -111,6 +111,25 @@ const photo = (file, ar, he, mod='') =>
      <img src="assets/photos/${file}" alt="${ar}" loading="lazy" decoding="async">
      <figcaption data-lang="ar">${ar}</figcaption><figcaption data-lang="he">${he}</figcaption>
    </figure>`;
+
+/* ----------------------------------------------------------- editable
+   te() is t() plus a marker saying which file and which key inside it a
+   piece of text came from. The tap-to-edit layer reads these markers, so
+   tapping a sentence on the page knows exactly what to write back to
+   content/*.json. Nothing else about the markup changes.
+
+     te('wisdom.json', 'current.ar', 'current.he', arText, heText)
+*/
+const te = (file, arKey, heKey, ar, he) =>
+  `<span data-lang="ar" data-edit="${file}:${arKey}">${ar}</span>` +
+  `<span data-lang="he" data-edit="${file}:${heKey}">${he}</span>`;
+
+/* block-level version, for headings and paragraphs */
+const teb = (tag, file, arKey, heKey, ar, he, cls = '') => {
+  const c = cls ? ` class="${cls}"` : '';
+  return `<${tag} data-lang="ar"${c} data-edit="${file}:${arKey}">${ar}</${tag}>` +
+         `<${tag} data-lang="he"${c} data-edit="${file}:${heKey}">${he}</${tag}>`;
+};
 
 /* -------------------------------------------------------------- helper */
 const t  = (ar, he) => `<span data-lang="ar">${ar}</span><span data-lang="he">${he}</span>`;
@@ -208,10 +227,10 @@ function footer(){
       <div>
         ${tb('h4','تواصلوا معنا','צרו קשר')}
         <ul>
-          <li><a href="tel:${SITE.mobile.replace(/-/g,'')}" style="direction:ltr;display:inline-block">${SITE.mobile}</a></li>
-          <li><a href="tel:${SITE.phone.replace(/-/g,'')}" style="direction:ltr;display:inline-block">${SITE.phone}</a></li>
-          <li>${t(SITE.city.ar,SITE.city.he)}</li>
-          <li>${t(SITE.hours.ar, SITE.hours.he)}</li>
+          <li><a href="tel:${SITE.mobile.replace(/-/g,'')}" style="direction:ltr;display:inline-block" data-edit="site.json:mobile">${SITE.mobile}</a></li>
+          <li><a href="tel:${SITE.phone.replace(/-/g,'')}" style="direction:ltr;display:inline-block" data-edit="site.json:phone">${SITE.phone}</a></li>
+          <li>${te('site.json','address_ar','address_he',SITE.city.ar,SITE.city.he)}</li>
+          <li>${te('site.json','hours_ar','hours_he',SITE.hours.ar, SITE.hours.he)}</li>
         </ul>
       </div>
     </div>
@@ -278,6 +297,7 @@ ${footer()}
   <div><img id="lb-img" src="" alt=""><p class="lb__cap" id="lb-cap"></p></div>
 </div>
 <script src="js/site.js?v=${ASSET_V}"></script>
+<script src="js/edit.js?v=${ASSET_V}" defer></script>
 </body>
 </html>`;
 }
@@ -467,7 +487,7 @@ ${ageBlock()}
 </section>`
 };
 
-module.exports = { C, CFG, WISDOM, GALLERY, DOODLE, doodle, photo, SITE, NAV, CONTACT, AGES, CREATURE, I, svg, t, tb, href, layout, banner, ageBlock, home, waNumber, OUT, fs, path };
+module.exports = { C, CFG, WISDOM, GALLERY, te, teb, DOODLE, doodle, photo, SITE, NAV, CONTACT, AGES, CREATURE, I, svg, t, tb, href, layout, banner, ageBlock, home, waNumber, OUT, fs, path };
 
 /* pages 2..15 live in build-pages.js and are appended by the runner */
 if (require.main === module) require('./build-pages.js');
