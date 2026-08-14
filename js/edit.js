@@ -58,21 +58,35 @@
   }
 
   /* Visit any page with ?edit=debug to see what the login actually left
-     behind. Prints keys only, never the credential itself. */
+     behind. Prints structure only, never a credential value. */
   if (location.search.indexOf('edit=debug') > -1) {
     var report = ['--- hekayat edit debug ---'];
+    function shape(raw, indent) {
+      var out = [];
+      var v; try { v = JSON.parse(raw); } catch (e) { return [indent + '(plain string, ' + String(raw).length + ' chars)']; }
+      if (v === null || typeof v !== 'object') return [indent + '(' + typeof v + ')'];
+      for (var k in v) {
+        var t = typeof v[k];
+        var d = t === 'string' ? 'string(' + v[k].length + ')' : (t === 'object' && v[k] ? 'object' : t);
+        out.push(indent + k + ' : ' + d);
+      }
+      if (!out.length) out.push(indent + '(empty object)');
+      return out;
+    }
     ['localStorage', 'sessionStorage'].forEach(function (name) {
       try {
         var store = window[name];
         report.push(name + ': ' + store.length + ' keys');
         for (var i = 0; i < store.length; i++) {
           var k = store.key(i);
-          report.push('   ' + k + '  ->  ' + (dig(store.getItem(k)) ? 'HAS a token' : 'no token'));
+          report.push(' ' + k + (dig(store.getItem(k)) ? '  [TOKEN]' : ''));
+          if (/user|auth|token|bridge/i.test(k)) report = report.concat(shape(store.getItem(k), '     '));
         }
       } catch (e) { report.push(name + ': blocked'); }
     });
+    report.push('cookies: ' + (document.cookie ? document.cookie.split(';').map(function(c){return c.split('=')[0].trim()}).join(', ') : 'none'));
     report.push('token found: ' + (token() ? 'YES' : 'NO'));
-    report.push('editable fields on this page: ' + document.querySelectorAll('[data-edit]').length);
+    report.push('editable fields: ' + document.querySelectorAll('[data-edit]').length);
     alert(report.join('\n'));
     console.log(report.join('\n'));
   }
