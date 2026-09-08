@@ -302,6 +302,10 @@ ${footer()}
 </html>`;
 }
 
+/* a consistent "read the whole page" link for the home-page teasers */
+const peek = (slug, ar, he) =>
+  `<a class="peek" href="${href(slug)}">${t(ar, he)}${svg('back')}</a>`;
+
 /* ------------------------------------------------------------- banner */
 const banner = (p) => `<section class="banner">
   <div class="blob" style="width:280px;height:280px;background:var(--${p.sig});opacity:.10;inset-inline-end:-90px;top:-110px"></div>
@@ -414,6 +418,29 @@ const home = {
   </div>
 </section>
 
+<section class="section">
+  ${doodle('star','inset-inline-end:4%;top:10%;width:40px','var(--blue)')}
+  <div class="wrap">
+    <div class="split split--center" style="--sp:1.15fr .85fr">
+      <div class="stack">
+        <h2 data-lang="ar">حضانة بدأت من <span class="scribble">سؤال بسيط</span></h2>
+        <h2 data-lang="he">מעון שהתחיל <span class="scribble">משאלה פשוטה</span></h2>
+        ${tb('p','ما الذي يحتاجه الطفل في سنواته الثلاث الأولى؟ الجواب الذي بنينا عليه حكايات: يحتاج أن يشعر بأنه في بيته. لا مكان يُترك فيه حتى ينتهي دوام أهله، بل مكان ينتظره ويعرفه ويحبّه.','מה ילד צריך בשלוש שנות חייו הראשונות? התשובה שעליה בנינו את חכאיאת: הוא צריך להרגיש שהוא בבית. לא מקום שמשאירים בו ילד עד שההורים מסיימים לעבוד, אלא מקום שמחכה לו, מכיר אותו ואוהב אותו.','lead')}
+        ${peek('about','تعرّفوا علينا أكثر','הכירו אותנו יותר')}
+      </div>
+      <div class="card" style="background:var(--bg-2)">
+        ${tb('h3','حكايات باختصار','חכאיאת בקצרה')}
+        <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:.8rem;margin-top:.9rem">
+          <li><strong>${t('الموقع','מיקום')}:</strong><br>${t(SITE.city.ar, SITE.city.he)}</li>
+          <li><strong>${t('الأعمار','גילאים')}:</strong><br>${t('من 3 شهور حتى 3 سنوات','מגיל 3 חודשים עד 3 שנים')}</li>
+          <li><strong>${t('الدوام','שעות')}:</strong><br>${t(SITE.hours.ar, SITE.hours.he)}</li>
+          <li><strong>${t('الإدارة','ניהול')}:</strong><br>${t(SITE.dir.ar, SITE.dir.he)}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 ${ageBlock()}
 
 <section class="section section--tint">
@@ -451,6 +478,24 @@ ${ageBlock()}
 
 <section class="section">
   <div class="wrap">
+    <div class="split split--start" style="--sp:.9fr 1.1fr">
+      <div class="stack">
+        <h2 data-lang="ar">يوم له <span class="scribble">إيقاع ثابت</span></h2>
+        <h2 data-lang="he">יום עם <span class="scribble">קצב קבוע</span></h2>
+        ${tb('p','من الاستقبال الصباحي حتى ساعة الرواح، لكل ساعة مكانها. الطفل الذي يعرف ما سيحدث بعد الفطور يشعر بالأمان.','מקבלת הבוקר ועד שעת האיסוף, לכל שעה יש את מקומה. ילד שיודע מה יקרה אחרי ארוחת הבוקר מרגיש בטוח.','lead')}
+        ${peek('daily','شوفوا البرنامج كامل','לצפייה בתוכנית המלאה')}
+      </div>
+      <div class="tl tl--peek">
+        ${C('daily.json').rows.slice(0,5).map(d=>`<div class="tl__item rv" style="--c:var(--${d.colour})">
+          <div class="tl__time" dir="ltr">${d.from} - ${d.to}</div>
+          ${tb('h4',d.ar,d.he)}</div>`).join('')}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="wrap">
     <div class="sec-head center">
       <h2 data-lang="ar">هذا هو <span class="scribble">بيتنا</span></h2>
       <h2 data-lang="he">זה <span class="scribble">הבית שלנו</span></h2>
@@ -461,6 +506,48 @@ ${ageBlock()}
       ${photo('playhouse.jpg','ركن اللعب: البيت الخشبي وشمس الإضاءة','פינת המשחק: בית העץ ומנורת השמש','rv photo--tall')}
       ${photo('library.jpg','ركن الكتب والمكعبات','פינת הספרים והקוביות','rv photo--wide')}
     </div>
+    <div style="text-align:center;margin-top:1.6rem">${peek('gallery','شوفوا كل الصور','לכל התמונות')}</div>
+  </div>
+</section>
+
+<section class="section">
+  ${doodle('burst','inset-inline-start:5%;top:12%;width:40px;opacity:.6','var(--purple)')}
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 data-lang="ar">ثلاث قناعات <span class="scribble scribble--pink">نبني عليها</span></h2>
+      <h2 data-lang="he">שלוש אמונות <span class="scribble scribble--pink">שעליהן אנחנו בונים</span></h2>
+    </div>
+    <div class="cards cols-3">
+      ${[['1','purple','كل طفل فريد','כל ילד ייחודי','لا نقيس طفلًا بطفل. ينمو ضمن مجموعته، لكن بحسب قدراته هو، لا بحسب المعدّل.','אנחנו לא מודדים ילד מול ילד. הוא גדל בתוך הקבוצה, אבל לפי היכולות שלו.'],
+        ['2','pink','أطفالكم أمانة','ילדיכם פיקדון','نؤمن أن أطفالكم أمانة نُحاسب عليها، ولذا نطلب منكم المساندة والتواصل.','אנחנו מאמינים שילדיכם הם פיקדון שעליו אנו נותנים דין וחשבון.'],
+        ['3','blue','للحياة الروحية مكان','לחיים הרוחניים יש מקום','جزء طبيعي من يوم الطفل، لا درسًا منفصلًا عنه.','חלק טבעי מהיום של הילד, לא שיעור נפרד.']]
+        .map(([n,c,ar,he,par,phe])=>`<div class="card rv" style="border-top:5px solid var(--${c})">
+          <div style="font-family:var(--font-display);font-weight:800;font-size:2.4rem;line-height:1;color:color-mix(in srgb,var(--${c}) 62%,var(--mix));margin-bottom:.3rem">${n}</div>
+          ${tb('h3',ar,he)}${tb('p',par,phe)}</div>`).join('')}
+    </div>
+    <div style="margin-top:1.6rem">${peek('believe','اقرأوا رسالتنا كاملة','לקריאת המסר המלא')}</div>
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="wrap">
+    <div class="split split--center" style="--sp:1.1fr .9fr">
+      <div class="stack">
+        <h2 data-lang="ar">الطاقم <span class="scribble">أصل الحكاية</span></h2>
+        <h2 data-lang="he">הצוות, <span class="scribble">לב הסיפור</span></h2>
+        ${tb('p','يمكن تجهيز أجمل مبنى وأحدث الألعاب، لكن ما يصنع الفرق فعلًا هو من يستقبل طفلكم كل صباح. ومن أجمل ما يميّز طاقم حكايات وجوده فيها لسنين طويلة، فالوجوه دائمة لا تتغيّر كل عام.','אפשר לבנות את המבנה היפה ביותר, אבל מי שבאמת עושה את ההבדל הוא מי שמקבל את ילדכם בכל בוקר. ואחד הדברים היפים בצוות של חכאיאת הוא שהוא נשאר כאן שנים ארוכות.','lead')}
+        ${peek('team','تعرّفوا على الطاقم','להכיר את הצוות')}
+      </div>
+      <div class="cards" style="gap:.7rem">
+        ${[['heart','pink','القدرة على الحبّ','יכולת לאהוב'],
+           ['badge','green','تأهيل أكاديمي','הכשרה אקדמית'],
+           ['clock','blue','خبرة سنين','ניסיון של שנים'],
+           ['chat','orange','التواصل مع الأهل','קשר עם ההורים']]
+          .map(([ic,c,ar,he])=>`<div class="rv" style="display:flex;align-items:center;gap:.85rem;padding:.85rem 1.1rem;background:var(--surface);border:2.5px solid var(--line);border-radius:18px">
+            <span style="width:34px;height:34px;border-radius:11px;flex-shrink:0;display:grid;place-items:center;background:color-mix(in srgb,var(--${c}) 15%,transparent);color:color-mix(in srgb,var(--${c}) 62%,var(--mix))">${svg(ic)}</span>
+            <strong style="font-family:var(--font-display)">${t(ar,he)}</strong></div>`).join('')}
+      </div>
+    </div>
   </div>
 </section>
 
@@ -468,9 +555,32 @@ ${ageBlock()}
   <div class="wrap">
     <div class="quote rv">
       <span class="quote__mark">”</span>
-      <blockquote data-lang="ar">تؤمن حكايات بأن كل طفل هو حكاية كاملة لها خصوصيتها، وهي الأفضل والأجمل.</blockquote>
-      <blockquote data-lang="he">בחכאיאת אנחנו מאמינים שכל ילד הוא סיפור שלם ומיוחד משלו, והיפה והטוב מכולם.</blockquote>
-      <cite>${t('من رسالة حضانة حكايات','מתוך המסר של מעון חכאיאת')}</cite>
+      <div style="font-weight:700;opacity:.85;margin-bottom:.9rem;position:relative;z-index:1">${t('حكمة هذا الشهر','חוכמת החודש')}</div>
+      <blockquote data-lang="ar">${WISDOM.current.ar}</blockquote>
+      <blockquote data-lang="he">${WISDOM.current.he}</blockquote>
+      ${WISDOM.current.source_ar ? `<cite>${t(WISDOM.current.source_ar, WISDOM.current.source_he)}</cite>` : ''}
+      <div style="position:relative;z-index:1;margin-top:1.2rem">
+        <a class="peek" href="${href('wisdom')}" style="color:#fff;border-bottom-color:rgba(255,255,255,.5)">${t('حكم الأشهر الماضية','חוכמת החודשים הקודמים')}${svg('back')}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">${tb('h2','كل ما تحتاجون معرفته','כל מה שחשוב לדעת')}</div>
+    <div class="doors">
+      ${[['management','star','orange','إدارة تسعى للأفضل','הנהלה ששואפת למיטב','رسالة من المديرة، وكيف تعمل الإدارة.','מכתב מהמנהלת ואיך ההנהלה עובדת.'],
+         ['building','build','cyan','مبنى وصفوف حكايات','המבנה והכיתות','مبنى شفاعمري عريق و800 متر من الساحات.','מבנה שפרעמי עתיק ו-800 מ"ר של חצרות.'],
+         ['kitchen','pot','green','مطبخنا الصحي','המטבח הבריא','ثلاث وجبات طازجة، بمسؤولة مطبخ واحدة.','שלוש ארוחות טריות, אחראית מטבח אחת.'],
+         ['guidance','book','purple','إرشاد','הדרכה וליווי','مرشدة تربوية ترافق الطاقم والإدارة كل شهر.','מדריכה חינוכית מלווה את הצוות מדי חודש.'],
+         ['rules','shield','blue','قوانين حكايات','הנהלים','الاستقبال، الصحّة، الأغراض، والشهرية.','קבלה, בריאות, ציוד ותשלומים.'],
+         ['hours','cal','teal','أيام وساعات العمل','ימים ושעות','الإثنين حتى الجمعة، ومخيّم صيفي.','שני עד שישי, ומחנה קיץ.'],
+         ['license','badge','teal','شهادة ترخيص','תעודת רישוי','ترخيصنا ومعايير الأمان والكاميرات.','הרישוי, תקני הבטיחות והמצלמות.'],
+         ['contact','chat','pink','تواصلوا معنا','צרו קשר','هاتف، واتساب، ولوحة الأهل في المدخل.','טלפון, וואטסאפ ולוח ההורים בכניסה.']]
+        .map(([slug,ic,c,ar,he,par,phe])=>`<a class="door rv" href="${href(slug)}" style="--c:var(--${c})">
+          <span class="door__ico" style="background:color-mix(in srgb,var(--${c}) 15%,transparent);color:color-mix(in srgb,var(--${c}) 62%,var(--mix))">${svg(ic)}</span>
+          <span>${tb('h3',ar,he)}${tb('p',par,phe)}</span></a>`).join('')}
     </div>
   </div>
 </section>
