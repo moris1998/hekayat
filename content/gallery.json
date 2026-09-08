@@ -117,6 +117,34 @@
       "ar": "صناديق الألعاب على ارتفاع يد الطفل",
       "he": "ארגזי המשחקים בגובה ידו של הילד",
       "room": "nahlat"
+    },
+    {
+      "src": "assets/photos/zaghalil-cribs.jpg",
+      "cat": "rooms",
+      "ar": "صفّ الزغاليل: غرفة النوم بأسرّتها وشجرة الزهر",
+      "he": "כיתת הזע'אליל: חדר השינה עם המיטות ועץ הפריחה",
+      "room": "zaghalil"
+    },
+    {
+      "src": "assets/photos/zaghalil-room.jpg",
+      "cat": "rooms",
+      "ar": "صفّ الزغاليل: غرفة النشاط وبابها إلى قاعة البيوت",
+      "he": "כיתת הזע'אליל: חדר הפעילות ודלתו לאולם הבתים",
+      "room": "zaghalil"
+    },
+    {
+      "src": "assets/photos/zaghalil-corner.jpg",
+      "cat": "rooms",
+      "ar": "ركن التبديل تحت الخيمة الزرقاء",
+      "he": "פינת ההחתלה מתחת לאוהל הכחול",
+      "room": "zaghalil"
+    },
+    {
+      "src": "assets/photos/zaghalil-hall.jpg",
+      "cat": "activities",
+      "ar": "القاعة تحت القوس الحجري: مساحة أول خطوة",
+      "he": "האולם מתחת לקשת האבן: מרחב הצעד הראשון",
+      "room": "zaghalil"
     }
   ]
 }
