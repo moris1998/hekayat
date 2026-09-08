@@ -504,7 +504,7 @@ ${ageBlock()}
     <div class="mosaic">
       ${photo('classroom-2.jpg','صفّ واسع بسقف خشبي عالٍ وجدارية الفيل','כיתה רחבה עם תקרת עץ גבוהה וציור הפיל','rv photo--wide')}
       ${photo('playhouse.jpg','ركن اللعب: البيت الخشبي وشمس الإضاءة','פינת המשחק: בית העץ ומנורת השמש','rv photo--tall')}
-      ${photo('library.jpg','ركن الكتب والمكعبات','פינת הספרים והקוביות','rv photo--wide')}
+      ${photo('tree-room.jpg','قاعة الشجرة وبيوت حكايات','אולם העץ ובתי חכאיאת','rv photo--wide')}
     </div>
     <div style="text-align:center;margin-top:1.6rem">${peek('gallery','شوفوا كل الصور','לכל התמונות')}</div>
   </div>
