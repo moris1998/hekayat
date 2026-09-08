@@ -454,6 +454,36 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
 }
 @media (max-width:620px){ .mosaic{grid-template-columns:1fr} }
 
+/* room-by-room tour: one card per class, tinted with that class's colour.
+   Each card carries its own creature so the room and the age group read as
+   the same thing on the building page and on the home age panel. */
+.rooms{display:grid;gap:1.4rem;margin-bottom:clamp(2.5rem,5vw,4rem)}
+.room{
+  background:var(--surface);border:3px solid var(--ink);border-radius:24px;
+  padding:clamp(1.2rem,3vw,1.8rem);box-shadow:6px 6px 0 var(--c);
+}
+.room__head{display:flex;gap:1rem;align-items:center;margin-bottom:.9rem}
+.room__ico{
+  flex-shrink:0;width:64px;height:64px;display:grid;place-items:center;
+  background:color-mix(in srgb, var(--c) 18%, #fff);
+  border:3px solid var(--ink);border-radius:50%;
+}
+.room__ico svg{width:38px;height:38px}
+.room__name{margin:0;color:var(--cd);font-size:clamp(1.3rem,3vw,1.7rem)}
+.room__age{margin:.15rem 0 0;font-size:.9rem;font-weight:600;opacity:.75}
+.room__text{margin:0 0 1.1rem;max-width:62ch}
+.room__shots{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.room__soon{
+  margin:0;font-size:.92rem;font-weight:600;color:var(--cd);
+  background:color-mix(in srgb, var(--c) 12%, #fff);
+  border-radius:14px;padding:.75rem 1rem;display:inline-block;
+}
+@media (max-width:620px){
+  .room__shots{grid-template-columns:1fr}
+  .room__ico{width:52px;height:52px}
+  .room__ico svg{width:30px;height:30px}
+}
+
 /* ---------- gallery ---------- */
 .gal{columns:3;column-gap:1rem}
 .gal figure{break-inside:avoid;margin-bottom:1rem;border-radius:var(--r-card);overflow:hidden;position:relative;cursor:pointer;background:var(--surface);border:1px solid var(--line)}

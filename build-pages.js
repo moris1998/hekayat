@@ -7,6 +7,31 @@ const { SITE, AGES, CREATURE, CFG, WISDOM, GALLERY, svg, t, tb, te, teb, href, l
 const draft = (ar, he) => `<div style="display:flex;gap:.7rem;align-items:flex-start;padding:1rem 1.2rem;border-radius:16px;background:var(--sig-soft);color:var(--sig);font-size:.92rem;font-weight:600;margin-top:1.5rem" data-draft>
   <span style="flex-shrink:0">${svg('spark')}</span><span>${t(ar, he)}</span></div>`;
 
+/* room-by-room tour, driven by content/rooms.json. A class whose photos[]
+   is empty still gets its text block - no empty strip, no broken layout. */
+const ROOMS = B.C('rooms.json').rooms;
+
+const roomsTour = () => `<div class="rooms">
+  ${ROOMS.map(r => {
+    const a = AGES.find(x => x.key === r.key);
+    if (!a) return '';
+    const shots = r.photos || [];
+    return `<article class="room rv" style="--c:var(--${a.c});--cd:var(--${a.c}-d)">
+      <div class="room__head">
+        <span class="room__ico">${CREATURE[a.key]}</span>
+        <div>
+          ${tb('h3', a.ar, a.he, 'room__name')}
+          <p class="room__age">${t(a.ageAr, a.ageHe)}</p>
+        </div>
+      </div>
+      ${tb('p', r.ar, r.he, 'room__text')}
+      ${shots.length ? `<div class="room__shots">
+        ${shots.map(p => photo(p.src, p.ar, p.he, 'photo--tall')).join('')}
+      </div>` : `<p class="room__soon">${t('صور هذه الغرفة في الطريق.','התמונות של החדר הזה בדרך.')}</p>`}
+    </article>`;
+  }).join('')}
+</div>`;
+
 const P = [];
 
 /* ------------------------------------------------------------- 2 about */
@@ -274,11 +299,15 @@ P.push({ slug:'building', sig:'cyan',
 
 <section class="section section--tint">
   <div class="wrap">
-    <div class="sec-head">${tb('h2','جولة في صفوفنا','סיור בכיתות שלנו')}</div>
+    <div class="sec-head">
+      ${tb('h2','جولة في صفوفنا','סיור בכיתות שלנו')}
+      ${tb('p','لكل مجموعة غرفتها، وكل غرفة مبنية على عمر أصحابها.','לכל קבוצה החדר שלה, וכל חדר בנוי לפי הגיל של בעליו.')}
+    </div>
+    ${roomsTour()}
     <div class="mosaic" style="margin-bottom:clamp(2.5rem,5vw,4rem)">
-      ${photo('classroom-1.jpg','صفّ حكايات: طاولات وكراسي بمقاس الأطفال','כיתת חכאיאת: שולחנות וכיסאות במידה של ילדים','rv photo--tall')}
       ${photo('playroom-1.jpg','ركن اللعب الإيهامي: مطبخ صغير وأريكة','פינת משחק דמיוני: מטבחון וספה','rv photo--tall')}
       ${photo('playroom-2.jpg','ركن البيت الخشبي، بإضاءة على شكل شمس','פינת בית העץ, עם תאורה בצורת שמש','rv photo--tall')}
+      ${photo('tree-room.jpg','قاعة الشجرة وبيوت حكايات','אולם העץ ובתי חכאיאת','rv photo--tall')}
     </div>
     <div class="split split--center" style="--sp:1fr 1.2fr">
       <div class="tile" style="background:var(--orange-d)"><div class="tile__deco"></div>
