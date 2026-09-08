@@ -309,9 +309,9 @@ P.push({ slug:'building', sig:'cyan',
       ${tb('p','عشب صناعي، زحاليق بمقاس الصغار، ومظلّات تكسر الشمس.','דשא סינתטי, מגלשות במידת הקטנים, וסככות ששוברות את השמש.')}
     </div>
     <div class="mosaic" style="margin-bottom:clamp(2.5rem,5vw,4rem)">
-      ${photo('yard-4.jpg','ساحة الزغاليل: عشب صناعي وزحاليق بمقاس الصغار','חצר הזע\'אליל: דשא סינתטי ומגלשות במידת הקטנים','rv photo--wide')}
-      ${photo('yard-2.jpg','بيت وزحلوقة وسيّارات يركبونها بأنفسهم','בית, מגלשה ומכוניות שהם רוכבים עליהן בעצמם','rv photo--wide')}
-      ${photo('yard-5.jpg','مظلّات تكسر الشمس فوق الملعب','סככות ששוברות את השמש מעל המגרש','rv photo--wide')}
+      ${photo('yard-main.jpg','الساحة الكبيرة تحت المظلّات الزرقاء','החצר הגדולה מתחת לסככות הכחולות','rv photo--wide')}
+      ${photo('yard-main-2.jpg','أراجيح ومنزلقات وجدار تسلّق على العشب','נדנדות, מגלשות וקיר טיפוס על הדשא','rv photo--wide')}
+      ${photo('yard-4.jpg','ساحة الزغاليل: زحاليق بمقاس الصغار','חצר הזע\'אליל: מגלשות במידת הקטנים','rv photo--wide')}
     </div>
     <div class="split split--center" style="--sp:1fr 1.2fr">
       <div class="tile" style="background:var(--orange-d)"><div class="tile__deco"></div>

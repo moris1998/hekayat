@@ -8,13 +8,6 @@ window.HEKAYAT_PHOTOS = [
     "room": "sisan"
   },
   {
-    "src": "assets/photos/classroom-1.jpg",
-    "cat": "rooms",
-    "ar": "صفّ الصيصان: ركن الأريكة وطاولات بمقاس الأطفال",
-    "he": "כיתת הציסאן: פינת הספה ושולחנות במידה של ילדים",
-    "room": "sisan"
-  },
-  {
     "src": "assets/photos/playroom-2.jpg",
     "cat": "rooms",
     "ar": "صفّ الفراشات: ركن البيت الخشبي بإضاءة على شكل شمس",
@@ -145,6 +138,58 @@ window.HEKAYAT_PHOTOS = [
     "ar": "القاعة تحت القوس الحجري: مساحة أول خطوة",
     "he": "האולם מתחת לקשת האבן: מרחב הצעד הראשון",
     "room": "zaghalil"
+  },
+  {
+    "src": "assets/photos/sisan-room.jpg",
+    "cat": "rooms",
+    "ar": "صفّ الصيصان: الصفّ كاملًا بسقفه الخشبي",
+    "he": "כיתת הציסאן: הכיתה כולה עם תקרת העץ",
+    "room": "sisan"
+  },
+  {
+    "src": "assets/photos/sisan-elephant.jpg",
+    "cat": "rooms",
+    "ar": "جدارية الفيل وأشكال بحرية معلّقة",
+    "he": "ציור הפיל וצורות ימיות תלויות",
+    "room": "sisan"
+  },
+  {
+    "src": "assets/photos/sisan-corner.jpg",
+    "cat": "rooms",
+    "ar": "ركن الأريكة والمرآة في صفّ الصيصان",
+    "he": "פינת הספה והמראה בכיתת הציסאן",
+    "room": "sisan"
+  },
+  {
+    "src": "assets/photos/sisan-kitchen.jpg",
+    "cat": "activities",
+    "ar": "المطبخ الخشبي عند مدخل صفّ الصيصان",
+    "he": "מטבח העץ בכניסה לכיתת הציסאן",
+    "room": "sisan"
+  },
+  {
+    "src": "assets/photos/yard-main.jpg",
+    "cat": "yard",
+    "ar": "الساحة الكبيرة تحت المظلّات الزرقاء",
+    "he": "החצר הגדולה מתחת לסככות הכחולות"
+  },
+  {
+    "src": "assets/photos/yard-main-2.jpg",
+    "cat": "yard",
+    "ar": "أراجيح ومنزلقات وجدار تسلّق على العشب",
+    "he": "נדנדות, מגלשות וקיר טיפוס על הדשא"
+  },
+  {
+    "src": "assets/photos/yard-main-3.jpg",
+    "cat": "yard",
+    "ar": "نفق القطّ والبيت الخشبي في الساحة",
+    "he": "מנהרת החתול ובית העץ בחצר"
+  },
+  {
+    "src": "assets/photos/yard-main-4.jpg",
+    "cat": "yard",
+    "ar": "بيوت لعب بمقاس الأطفال تحت الظلّ",
+    "he": "בתי משחק במידת הילדים בצל"
   }
 ];
 window.HEKAYAT_GROUPS = [
