@@ -304,10 +304,14 @@ P.push({ slug:'building', sig:'cyan',
       ${tb('p','لكل مجموعة غرفتها، وكل غرفة مبنية على عمر أصحابها.','לכל קבוצה החדר שלה, וכל חדר בנוי לפי הגיל של בעליו.')}
     </div>
     ${roomsTour()}
+    <div class="sec-head" style="margin-top:clamp(2.5rem,5vw,4rem)">
+      ${tb('h2','وساحاتنا في الخارج','והחצרות שלנו בחוץ')}
+      ${tb('p','عشب صناعي، زحاليق بمقاس الصغار، ومظلّات تكسر الشمس.','דשא סינתטי, מגלשות במידת הקטנים, וסככות ששוברות את השמש.')}
+    </div>
     <div class="mosaic" style="margin-bottom:clamp(2.5rem,5vw,4rem)">
-      ${photo('playroom-1.jpg','ركن اللعب الإيهامي: مطبخ صغير وأريكة','פינת משחק דמיוני: מטבחון וספה','rv photo--tall')}
-      ${photo('playroom-2.jpg','ركن البيت الخشبي، بإضاءة على شكل شمس','פינת בית העץ, עם תאורה בצורת שמש','rv photo--tall')}
-      ${photo('tree-room.jpg','قاعة الشجرة وبيوت حكايات','אולם העץ ובתי חכאיאת','rv photo--tall')}
+      ${photo('yard-4.jpg','ساحة الزغاليل: عشب صناعي وزحاليق بمقاس الصغار','חצר הזע\'אליל: דשא סינתטי ומגלשות במידת הקטנים','rv photo--wide')}
+      ${photo('yard-2.jpg','بيت وزحلوقة وسيّارات يركبونها بأنفسهم','בית, מגלשה ומכוניות שהם רוכבים עליהן בעצמם','rv photo--wide')}
+      ${photo('yard-5.jpg','مظلّات تكسر الشمس فوق الملعب','סככות ששוברות את השמש מעל המגרש','rv photo--wide')}
     </div>
     <div class="split split--center" style="--sp:1fr 1.2fr">
       <div class="tile" style="background:var(--orange-d)"><div class="tile__deco"></div>
