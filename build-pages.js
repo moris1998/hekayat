@@ -551,12 +551,13 @@ P.push({ slug:'gallery', sig:'cyan',
   <div class="wrap">
     <div class="gal-filter" id="galfilter">
       <button class="chip on" data-cat="all">${t('الكل','הכול')}</button>
-      <button class="chip" data-cat="events">${t('حفلات ومناسبات','מסיבות ואירועים')}</button>
+      ${AGES.map(a=>`<button class="chip chip--room" data-cat="${a.key}" style="--c:var(--${a.c});--cd:var(--${a.c}-d)">
+        <span class="chip__ico">${CREATURE[a.key]}</span>${t(a.ar, a.he)}</button>`).join('')}
       <button class="chip" data-cat="yard">${t('الساحات والملاعب','חצרות ומגרשים')}</button>
       <button class="chip" data-cat="activities">${t('فعاليات','פעילויות')}</button>
-      <button class="chip" data-cat="rooms">${t('الصفوف','הכיתות')}</button>
+      <button class="chip" data-cat="events">${t('حفلات ومناسبات','מסיבות ואירועים')}</button>
     </div>
-    <div class="gal" id="gal"></div>
+    <div id="gal"></div>
     <div class="empty" id="galempty">
       <div style="color:var(--cyan)">${svg('img')}</div>
       ${tb('h3','المعرض جاهز وينتظر صوركم','הגלריה מוכנה ומחכה לתמונות שלכם')}
@@ -672,7 +673,15 @@ P.push({ slug:'contact', sig:'pink',
 /* the gallery list the browser reads is generated, never hand-edited */
 fs.writeFileSync(path.join(OUT, 'js', 'gallery-data.js'),
   '/* GENERATED from content/gallery.json by build.js. Do not edit by hand. */\n' +
-  'window.HEKAYAT_PHOTOS = ' + JSON.stringify(GALLERY.photos, null, 2) + ';\n');
+  'window.HEKAYAT_PHOTOS = ' + JSON.stringify(GALLERY.photos, null, 2) + ';\n' +
+  /* group headings for the gallery: class order, names and colours come from
+     AGES so the gallery, the age panel and the room tour never drift apart */
+  'window.HEKAYAT_GROUPS = ' + JSON.stringify([
+    ...AGES.map(a => ({ key:a.key, c:a.c, ar:'صفّ ال'+a.ar, he:'כיתת ה'+a.he })),
+    { key:'yard',       c:'green',  ar:'الساحات والملاعب', he:'החצרות והמגרשים' },
+    { key:'activities', c:'purple', ar:'فعاليات',          he:'פעילויות' },
+    { key:'events',     c:'pink',   ar:'حفلات ومناسبات',   he:'מסיבות ואירועים' },
+  ], null, 2) + ';\n');
 
 const all = [B.home, ...P.map(p => ({ ...p, body: p.body(p) }))];
 all.forEach(p => {

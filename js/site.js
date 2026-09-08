@@ -235,10 +235,15 @@
 
   /* ---------------------------------------------------------- gallery */
   let galCat = 'all';
+  /* a photo belongs to a chip if it carries that category OR sits in that
+     class's room, so the four class chips work without re-tagging cat */
+  const inCat = (p, cat) => cat === 'all' || p.cat === cat || p.room === cat;
+
   function renderGallery() {
     const grid = $('#gal'), empty = $('#galempty');
     if (!grid) return;
-    const photos = (window.HEKAYAT_PHOTOS || []).filter(p => galCat === 'all' || p.cat === galCat);
+    const all = window.HEKAYAT_PHOTOS || [];
+    const photos = all.filter(p => inCat(p, galCat));
     const l = document.documentElement.lang === 'he' ? 'he' : 'ar';
     if (!photos.length) {
       grid.innerHTML = '';
@@ -246,16 +251,57 @@
       return;
     }
     if (empty) empty.style.display = 'none';
-    grid.innerHTML = photos.map((p, i) =>
-      '<figure data-i="' + i + '">' +
+
+    /* the lightbox looks photos up by index, so keep one flat ordered list
+       and have every figure point back into it, grouped or not */
+    const order = [];
+    const fig = p => {
+      const i = order.push(p) - 1;
+      return '<figure data-i="' + i + '">' +
         '<img src="' + p.src + '" alt="' + (p[l] || '') + '" loading="lazy" width="600" height="450">' +
         (p[l] ? '<figcaption>' + p[l] + '</figcaption>' : '') +
-      '</figure>').join('');
+      '</figure>';
+    };
+
+    if (galCat === 'all') {
+      const groups = window.HEKAYAT_GROUPS || [];
+      const seen = new Set();
+      let html = '';
+      groups.forEach(g => {
+        const items = all.filter(p => !seen.has(p.src) && inCat(p, g.key));
+        if (!items.length) return;
+        items.forEach(p => seen.add(p.src));
+        html += '<section class="gal-group" style="--c:var(--' + g.c + ');--cd:var(--' + g.c + '-d)">' +
+          '<h3 class="gal-group__h">' + g[l] +
+            '<span class="gal-group__n">' + items.length + '</span></h3>' +
+          '<div class="gal">' + items.map(fig).join('') + '</div>' +
+        '</section>';
+      });
+      const rest = all.filter(p => !seen.has(p.src));
+      if (rest.length) {
+        html += '<section class="gal-group" style="--c:var(--blue);--cd:var(--blue-d)">' +
+          '<h3 class="gal-group__h">' + (l === 'he' ? 'המבנה שלנו' : 'مبنى حكايات') +
+            '<span class="gal-group__n">' + rest.length + '</span></h3>' +
+          '<div class="gal">' + rest.map(fig).join('') + '</div>' +
+        '</section>';
+      }
+      grid.innerHTML = html;
+    } else {
+      grid.innerHTML = '<div class="gal">' + photos.map(fig).join('') + '</div>';
+    }
+
     $$('#gal figure').forEach(f => f.addEventListener('click', () => {
-      const p = photos[parseInt(f.dataset.i, 10)];
+      const p = order[parseInt(f.dataset.i, 10)];
       openLightbox(p.src, p[l] || '');
     }));
   }
+  /* a chip that would land on an empty grid is worse than no chip, so drop
+     the ones with nothing behind them yet (a class we haven't photographed) */
+  $$('#galfilter .chip').forEach(c => {
+    const cat = c.dataset.cat;
+    if (cat === 'all') return;
+    if (!(window.HEKAYAT_PHOTOS || []).some(p => inCat(p, cat))) c.hidden = true;
+  });
   $$('#galfilter .chip').forEach(c => c.addEventListener('click', () => {
     $$('#galfilter .chip').forEach(x => x.classList.remove('on'));
     c.classList.add('on');
