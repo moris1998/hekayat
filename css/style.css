@@ -257,15 +257,15 @@ p{max-width:66ch}
 .hero__art{position:relative;display:grid;place-items:center;min-height:380px}
 .hero__art > img{width:min(100%,470px);position:relative;z-index:2;filter:drop-shadow(0 24px 44px rgba(94,74,50,.22))}
 
-.bubbles{position:absolute;inset:0;z-index:1;pointer-events:none;
-  transform:translate3d(var(--px,0),var(--py,0),0);transition:transform .5s var(--ease)}
-.hero__art > img{transform:translate3d(calc(var(--px,0px) * -.4),calc(var(--py,0px) * -.4),0);transition:transform .6s var(--ease)}
+/* pointer drift: site.js writes each layer's transform directly. Driving them
+   from a CSS variable on .hero__art recalculated every descendant per frame */
+.bubbles{position:absolute;inset:0;z-index:1;pointer-events:none;transition:transform .5s var(--ease)}
+.hero__art > img{transition:transform .6s var(--ease)}
 
 /* three real rooms as instant prints, taped to the page - still, not a
    slideshow, and in the same paper-and-scribble register as the doodles */
 .snaps{
   position:relative;z-index:2;width:min(100%,460px);aspect-ratio:1/1;
-  transform:translate3d(calc(var(--px,0px) * -.3),calc(var(--py,0px) * -.3),0);
   transition:transform .6s var(--ease);
 }
 .snap{
@@ -273,7 +273,7 @@ p{max-width:66ch}
   background:#fff;padding:9px 9px 0;color:inherit;text-decoration:none;
   border:3px solid var(--ink);border-radius:6px;
   box-shadow:6px 6px 0 var(--c);
-  transition:rotate .35s var(--ease),translate .35s var(--ease),box-shadow .35s var(--ease);
+  transition:rotate .22s var(--ease),translate .22s var(--ease),box-shadow .22s var(--ease);
 }
 .snap img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:2px}
 .snap__cap{
@@ -297,7 +297,7 @@ p{max-width:66ch}
 .s2{inset-inline-end:0;top:10%;rotate:6deg;z-index:2}
 .s2::before{rotate:5deg}
 .s3{inset-inline-start:25%;bottom:0;rotate:-2deg;z-index:1}
-@media (hover:hover){
+@media (hover:hover) and (pointer:fine){
   .snap:hover{rotate:0deg;translate:0 -7px;z-index:5;box-shadow:9px 10px 0 var(--c)}
 }
 .bubbles span{
@@ -322,7 +322,7 @@ p{max-width:66ch}
 .age__ico{
   width:66px;height:66px;margin:0 auto .7rem;border-radius:50%;
   display:grid;place-items:center;background:var(--c);
-  transition:transform .4s var(--ease);
+  transition:transform .25s var(--ease);
 }
 .age[aria-selected="true"] .age__ico{transform:scale(1.08) rotate(-6deg)}
 @media (hover:hover) and (pointer:fine){.age:hover .age__ico{transform:scale(1.08) rotate(-6deg)}}
@@ -338,8 +338,9 @@ p{max-width:66ch}
 .agepanel__ico{width:96px;height:96px;border-radius:50%;background:var(--c);display:grid;place-items:center;flex-shrink:0}
 .agepanel__ico svg{width:54px;height:54px}
 .agepanel h3{color:color-mix(in srgb,var(--c) 62%,var(--mix));margin-bottom:.25rem}
-.fadein{animation:fadein .45s var(--ease)}
-@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* the age panel swapping content: a UI response, parents click through all four */
+.fadein{animation:fadein .2s var(--ease)}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* Two-column sections. The ratio comes in as --sp so the mobile rule below
    can still override it; an inline grid-template-columns could not be beaten. */
@@ -394,13 +395,14 @@ p{max-width:66ch}
   100%{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}
 }
 
-/* the selected creature keeps a gentle idle bob so the section feels alive */
+/* the creature in the panel keeps a gentle idle bob so the section feels alive.
+   Only the panel's: a bob on the selected TAB icon owned its transform, so the
+   selected pose below never showed and selecting a hovered tab snapped from the
+   hover pose to the keyframe's first frame. The tab is already marked by its
+   border and lift. */
 @keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(4deg)}}
-.age[aria-selected="true"] .age__ico{animation:bob 2.4s ease-in-out infinite}
 @media (hover:hover) and (pointer:fine){.age:hover .age__ico{transform:scale(1.12) rotate(-8deg)}}
 .agepanel__ico{animation:bob 3s ease-in-out infinite}
-@media (hover:hover) and (pointer:fine){.card--lift:hover .card__ico{transform:rotate(-8deg) scale(1.08)}}
-.card__ico{transition:transform .35s var(--ease)}
 
 /* ---------- cards ---------- */
 .cards{display:grid;gap:1.25rem}
@@ -411,7 +413,8 @@ p{max-width:66ch}
   padding:clamp(1.4rem,2.4vw,2rem);
   transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s;
 }
-@media (hover:hover) and (pointer:fine){.card--lift:hover{transform:translateY(-5px);box-shadow:var(--shadow-m);border-color:color-mix(in srgb,var(--sig) 40%,var(--line))}}
+/* no hover lift on .card--lift: every one on the site is a plain div, and a
+   card that rises under the cursor says "click me" when nothing happens */
 .card__ico{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;margin-bottom:1rem}
 .card__ico svg{width:26px;height:26px}
 .card h3{margin-bottom:.45rem}
@@ -619,7 +622,7 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
 }
 .chip{
   padding:.5rem 1.1rem;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);
-  cursor:pointer;font-family:var(--font-display);font-weight:700;font-size:.93rem;transition:.2s;
+  cursor:pointer;font-family:var(--font-display);font-weight:700;font-size:.93rem;transition:background-color .2s,border-color .2s,color .2s,transform .12s var(--ease);
 }
 @media (hover:hover) and (pointer:fine){.chip:hover{border-color:var(--sig)}}
 .chip.on{background:var(--sig-d);color:#fff;border-color:var(--sig-d)}
@@ -660,7 +663,7 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
 .formnote.show{display:block}
 
 /* ---------- contact rows ---------- */
-.ctc{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.25rem;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--line);transition:.25s}
+.ctc{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.25rem;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--line);transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s}
 @media (hover:hover) and (pointer:fine){.ctc:hover{transform:translateY(-3px);box-shadow:var(--shadow-m);border-color:var(--sig-d)}}
 .ctc__ico{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;flex-shrink:0}
 .ctc__ico svg{width:23px;height:23px}
@@ -680,7 +683,7 @@ html[dir="rtl"] .ctc__v{text-align:right}
 @media (hover:hover) and (pointer:fine){.ftr a:hover{color:var(--sig-text)}}
 .ftr__bar{margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.88rem;color:var(--ink-2)}
 .social{display:flex;gap:.5rem;margin-top:.9rem}
-.social a{width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;transition:.2s}
+.social a{width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;transition:transform .2s var(--ease),background-color .2s,border-color .2s,color .2s}
 @media (hover:hover) and (pointer:fine){.social a:hover{background:var(--sig-d);border-color:var(--sig-d);color:#fff;transform:translateY(-3px)}}
 .social svg{width:19px;height:19px}
 
@@ -743,12 +746,12 @@ body::after{
   box-shadow:0 6px 0 -1px color-mix(in srgb,var(--line) 85%,transparent),
              0 16px 26px -16px rgba(94,74,50,.35);
 }
-@media (hover:hover) and (pointer:fine){.card--lift:hover,.ctc:hover{
+@media (hover:hover) and (pointer:fine){.ctc:hover{
   transform:translateY(-5px);
   box-shadow:0 11px 0 -1px color-mix(in srgb,var(--sig) 30%,var(--line)),
              0 26px 34px -18px rgba(94,74,50,.4);
 }}
-.card--lift:active,.ctc:active{
+.ctc:active{
   transform:translateY(2px);
   box-shadow:0 2px 0 -1px color-mix(in srgb,var(--line) 85%,transparent),
              0 8px 14px -10px rgba(94,74,50,.3);
@@ -801,8 +804,8 @@ body::after{
 /* ---------- reveal on scroll ----------
    Visible by default. Only a page that has confirmed JS (html.js) hides them,
    so no-JS visitors and any failure of the observer still see all content. */
-.rv{transition:opacity .7s var(--ease),transform .7s var(--ease)}
-html.js .rv{opacity:0;transform:translateY(24px)}
+.rv{transition:opacity .3s var(--ease),transform .3s var(--ease)}
+html.js .rv{opacity:0;transform:translateY(8px)}
 html.js .rv.in{opacity:1;transform:none}
 
 /* ---------- responsive ---------- */
@@ -875,13 +878,20 @@ html.js .rv.in{opacity:1;transform:none}
 
 /* ---------- motion preferences ---------- */
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important}
+  /* gentler, not zero: anything that MOVES (transform, translate, rotate, scale)
+     changes instantly, while colour, opacity and shadow still ease - they carry
+     press and state feedback without any motion. Keyframes collapse to an end state. */
+  *,*::before,*::after{
+    transition-property:opacity,color,background-color,border-color,outline-color,box-shadow,fill,stroke !important;
+    animation-duration:.01ms !important;animation-iteration-count:1 !important;
+    scroll-behavior:auto !important;
+  }
   html.js .rv{opacity:1;transform:none}
   .bubbles span{animation:none}
   .snaps{transform:none}
-  .age[aria-selected="true"] .age__ico,.agepanel__ico{animation:none}
+  .agepanel__ico{animation:none}
   .bubbles,.hero__art > img{transform:none}
-  .card--lift:hover,.ctc:hover,.age:hover,.btn--primary:hover,.btn--ghost:hover{transform:none}
+  .ctc:hover,.age:hover,.btn--primary:hover,.btn--ghost:hover{transform:none}
 }
 
 /* ---------- print ---------- */
@@ -993,10 +1003,16 @@ html.hk-editing [data-edit].hk-changed{
   display:inline-flex;align-items:center;gap:.45rem;margin-top:1.1rem;
   font-family:var(--font-display);font-weight:800;font-size:1rem;
   color:var(--sig-text);border-bottom:3px solid color-mix(in srgb,var(--sig) 45%,transparent);
-  padding-bottom:2px;transition:gap .2s var(--ease),border-color .2s;
+  padding-bottom:2px;transition:border-color .2s;
 }
-@media (hover:hover) and (pointer:fine){.peek:hover{gap:.8rem;border-bottom-color:var(--sig)}}
-.peek svg{width:17px;height:17px}
+/* the arrow steps forward on hover. It used to widen the gap, which reflowed the
+   line every frame; `translate` composes with the RTL scaleX(-1) flip below.
+   Both languages are RTL, so forward is left: -4px. */
+@media (hover:hover) and (pointer:fine){
+  .peek:hover{border-bottom-color:var(--sig)}
+  .peek:hover svg{translate:-4px 0}
+}
+.peek svg{width:17px;height:17px;transition:translate .2s var(--ease)}
 html[dir="rtl"] .peek svg{transform:scaleX(-1)}   /* arrow points the way we read */
 
 /* compact grid of the remaining pages, so the home page can point at

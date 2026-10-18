@@ -93,7 +93,8 @@
       /* Do not start in a hidden tab: rAF is throttled there and the count
          would freeze on a wrong number. The correct value is already shown. */
       if (reduced || document.hidden) return;
-      const dur = 1400, t0 = performance.now();
+      /* short: this replays on every visit, and the real number is already shown */
+      const dur = 800, t0 = performance.now();
       const step = now => {
         if (document.hidden) { el.textContent = target; return; }
         const p = Math.min((now - t0) / dur, 1);
@@ -132,11 +133,13 @@
         '<p>' + a[l].d + '</p></div>' +
       '</div>';
   }
+  /* confetti celebrates the first choice only; by the third click it's noise */
+  let celebrated = false;
   function selectAge(i, burstFrom) {
     ageIdx = i;
     $$('.age').forEach(b => b.setAttribute('aria-selected', String(parseInt(b.dataset.age, 10) === i)));
     renderAge();
-    if (burstFrom) confetti(burstFrom, ageData[i].c);
+    if (burstFrom && !celebrated) { celebrated = true; confetti(burstFrom, ageData[i].c); }
   }
   $$('.age').forEach(btn => btn.addEventListener('click', () => {
     const i = parseInt(btn.dataset.age, 10);
@@ -207,19 +210,28 @@
   }
 
   /* ------------------------------------------------- hero pointer drift
-     Desktop only, transform-driven, no scroll or state involved. */
+     Desktop only, transform-driven, no scroll or state involved. Each layer's
+     transform is written directly at its own depth: a CSS variable on the parent
+     would recalculate styles for every descendant on each frame. The CSS
+     transitions on these layers smooth the motion between pointer samples. */
   const heroArt = $('.hero__art');
   if (heroArt && !reduced && window.matchMedia('(pointer:fine)').matches) {
+    const layers = [
+      [$('.bubbles', heroArt), 1],          // background: drifts with the pointer
+      [$('.snaps', heroArt), -0.3],         // prints: nearer, so they drift against it
+      [$(':scope > img', heroArt), -0.4],   // the logo, if it ever returns to the slot
+    ].filter(([el]) => el);
     let ticking = false;
     $('.hero').addEventListener('pointermove', e => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
         const r = heroArt.getBoundingClientRect();
-        const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
-        const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
-        heroArt.style.setProperty('--px', (dx * 22).toFixed(1) + 'px');
-        heroArt.style.setProperty('--py', (dy * 22).toFixed(1) + 'px');
+        const px = (e.clientX - (r.left + r.width / 2)) / r.width * 22;
+        const py = (e.clientY - (r.top + r.height / 2)) / r.height * 22;
+        layers.forEach(([el, depth]) => {
+          el.style.transform = 'translate3d(' + (px * depth).toFixed(1) + 'px,' + (py * depth).toFixed(1) + 'px,0)';
+        });
         ticking = false;
       });
     });
