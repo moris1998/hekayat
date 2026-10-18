@@ -36,7 +36,7 @@ const waNumber = CFG.whatsapp;
 /* schema.org wants HH:MM, but site.json stores the human form (7:30) */
 const pad = t => t.padStart(5, '0');
 /* Bump when css/js change, so a phone that cached the old files reloads them. */
-const ASSET_V = '15';
+const ASSET_V = '16';
 
 /* --------------------------------------------------------------- icons
    Stroke glyphs follow the Tabler Icons geometry (MIT), 24x24 grid,
@@ -110,6 +110,15 @@ const photo = (file, ar, he, mod='') =>
   `<figure class="photo ${mod}">
      <img src="assets/photos/${file}" alt="${ar}" loading="lazy" decoding="async">
      <figcaption data-lang="ar">${ar}</figcaption><figcaption data-lang="he">${he}</figcaption>
+   </figure>`;
+
+/* one instant print in the hero: a real room, taped down, captioned by class.
+   These are above the fold, so they load eagerly from small square crops in
+   assets/photos/hero/ rather than the full-size room photos. */
+const snap = (file, ar, he, c, cls, first = false) =>
+  `<figure class="snap ${cls}" style="--c:var(--${c});--cd:var(--${c}-d)">
+     <img src="assets/photos/hero/${file}" alt="${ar}" width="640" height="640" decoding="async"${first ? ' fetchpriority="high"' : ''}>
+     <figcaption>${t(ar, he)}</figcaption>
    </figure>`;
 
 /* ----------------------------------------------------------- editable
@@ -401,7 +410,11 @@ const home = {
           <span style="width:52px;height:52px;background:var(--purple);opacity:.6;inset-inline-end:0;bottom:16%;animation-delay:-4s"></span>
           <span style="width:30px;height:30px;background:var(--blue);inset-inline-start:12%;bottom:6%;animation-delay:-5.2s"></span>
         </div>
-        <img src="assets/logo-full.png" alt="${SITE.name.ar}" width="1115" height="1300" fetchpriority="high">
+        <div class="snaps">
+          ${snap('zaghalil-cribs.jpg','صفّ الزغاليل','כיתת הזע\'אליל','pink','s1',true)}
+          ${snap('yard-main.jpg','ساحاتنا','החצרות שלנו','green','s2')}
+          ${snap('sisan-elephant.jpg','صفّ الصيصان','כיתת הציסאן','orange','s3')}
+        </div>
       </div>
     </div>
   </div>
