@@ -108,6 +108,18 @@ button,input,textarea,select{font:inherit;color:inherit}
    appearance is auto, so every <button> we style - chips, age tabs, CTAs -
    would silently ignore its own colour on Safari and iOS. Reset it once. */
 button{appearance:none;-webkit-appearance:none;background:none;border:none}
+
+/* ---------- feeling native on a phone ---------- */
+/* no grey/blue flash over every tapped control - each one carries its own
+   :active press state instead (see "press feedback" below) */
+html{-webkit-tap-highlight-color:transparent}
+/* taps fire immediately rather than waiting to see if it's a double-tap zoom */
+button,a,[role="button"],summary,label,.gal figure{touch-action:manipulation}
+/* holding a control shouldn't select its label or pop the copy callout.
+   Controls only: addresses, phone numbers and body text stay selectable. */
+button,.btn,.chip,.nav__link,.age,.acc__btn,.langtog,.burger{
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+}
 :focus-visible{outline:3px solid var(--sig);outline-offset:3px;border-radius:6px}
 
 /* language visibility: both languages ship in the HTML, CSS picks one */
@@ -161,7 +173,8 @@ p{max-width:66ch}
   font-family:var(--font-display);white-space:nowrap;
   background:none;border:0;cursor:pointer;transition:background .2s,color .2s;
 }
-.nav__link:hover,.nav__link[aria-expanded="true"]{background:var(--sig-soft);color:var(--sig-text)}
+.nav__link[aria-expanded="true"]{background:var(--sig-soft);color:var(--sig-text)}
+@media (hover:hover) and (pointer:fine){.nav__link:hover{background:var(--sig-soft);color:var(--sig-text)}}
 .nav__link[aria-current="page"]{color:var(--sig-text)}
 .nav__link svg{width:12px;height:12px;transition:transform .25s var(--ease)}
 .nav__link[aria-expanded="true"] svg{transform:rotate(180deg)}
@@ -178,7 +191,7 @@ p{max-width:66ch}
   display:flex;align-items:center;gap:.7rem;padding:.6rem .7rem;border-radius:14px;
   font-weight:600;font-size:.94rem;transition:background .18s;
 }
-.menu a:hover{background:var(--bg-2)}
+@media (hover:hover) and (pointer:fine){.menu a:hover{background:var(--bg-2)}}
 .menu a .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 
 .hdr__side{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
@@ -203,6 +216,8 @@ p{max-width:66ch}
 .drawer{
   position:fixed;inset:0;z-index:60;background:var(--bg);
   padding:1.2rem;overflow-y:auto;
+  /* reaching the end of the menu mustn't drag the page underneath */
+  overscroll-behavior:contain;
   transform:translateY(-100%);transition:transform .38s var(--ease);
 }
 .drawer.open{transform:translateY(0)}
@@ -224,10 +239,10 @@ p{max-width:66ch}
 }
 .btn svg{width:18px;height:18px;flex-shrink:0}
 .btn--primary{background:var(--sig-d);color:#fff;box-shadow:0 8px 20px -8px color-mix(in srgb,var(--sig) 70%,transparent)}
-.btn--primary:hover{transform:translateY(-2px);box-shadow:0 14px 28px -10px color-mix(in srgb,var(--sig) 70%,transparent)}
+@media (hover:hover) and (pointer:fine){.btn--primary:hover{transform:translateY(-2px);box-shadow:0 14px 28px -10px color-mix(in srgb,var(--sig) 70%,transparent)}}
 .btn--primary:active{transform:translateY(0) scale(.98)}
 .btn--ghost{background:var(--surface);color:var(--ink);border:1.5px solid var(--line)}
-.btn--ghost:hover{border-color:var(--sig);color:var(--sig-text);transform:translateY(-2px)}
+@media (hover:hover) and (pointer:fine){.btn--ghost:hover{border-color:var(--sig);color:var(--sig-text);transform:translateY(-2px)}}
 .btn--ghost:active{transform:translateY(0) scale(.98)}
 
 /* ---------- hero ---------- */
@@ -298,14 +313,15 @@ p{max-width:66ch}
   transition:transform .3s var(--ease),border-color .3s,box-shadow .3s;
   font-family:var(--font-display);
 }
-.age:hover{transform:translateY(-6px);box-shadow:var(--shadow-m)}
+@media (hover:hover) and (pointer:fine){.age:hover{transform:translateY(-6px);box-shadow:var(--shadow-m)}}
 .age[aria-selected="true"]{border-color:var(--c);box-shadow:var(--shadow-m);transform:translateY(-6px)}
 .age__ico{
   width:66px;height:66px;margin:0 auto .7rem;border-radius:50%;
   display:grid;place-items:center;background:var(--c);
   transition:transform .4s var(--ease);
 }
-.age:hover .age__ico,.age[aria-selected="true"] .age__ico{transform:scale(1.08) rotate(-6deg)}
+.age[aria-selected="true"] .age__ico{transform:scale(1.08) rotate(-6deg)}
+@media (hover:hover) and (pointer:fine){.age:hover .age__ico{transform:scale(1.08) rotate(-6deg)}}
 .age__ico svg{width:42px;height:42px}
 .age__name{display:block;font-weight:800;font-size:1.2rem;line-height:1.3}
 .age__age{display:block;font-size:.85rem;color:var(--ink-2);font-family:var(--font-body);font-weight:500;line-height:1.5;margin-top:.15rem}
@@ -377,9 +393,9 @@ p{max-width:66ch}
 /* the selected creature keeps a gentle idle bob so the section feels alive */
 @keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-7px) rotate(4deg)}}
 .age[aria-selected="true"] .age__ico{animation:bob 2.4s ease-in-out infinite}
-.age:hover .age__ico{transform:scale(1.12) rotate(-8deg)}
+@media (hover:hover) and (pointer:fine){.age:hover .age__ico{transform:scale(1.12) rotate(-8deg)}}
 .agepanel__ico{animation:bob 3s ease-in-out infinite}
-.card--lift:hover .card__ico{transform:rotate(-8deg) scale(1.08)}
+@media (hover:hover) and (pointer:fine){.card--lift:hover .card__ico{transform:rotate(-8deg) scale(1.08)}}
 .card__ico{transition:transform .35s var(--ease)}
 
 /* ---------- cards ---------- */
@@ -391,7 +407,7 @@ p{max-width:66ch}
   padding:clamp(1.4rem,2.4vw,2rem);
   transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s;
 }
-.card--lift:hover{transform:translateY(-5px);box-shadow:var(--shadow-m);border-color:color-mix(in srgb,var(--sig) 40%,var(--line))}
+@media (hover:hover) and (pointer:fine){.card--lift:hover{transform:translateY(-5px);box-shadow:var(--shadow-m);border-color:color-mix(in srgb,var(--sig) 40%,var(--line))}}
 .card__ico{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;margin-bottom:1rem}
 .card__ico svg{width:26px;height:26px}
 .card h3{margin-bottom:.45rem}
@@ -569,7 +585,7 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
 .gal{columns:3;column-gap:1rem}
 .gal figure{break-inside:avoid;margin-bottom:1rem;border-radius:var(--r-card);overflow:hidden;position:relative;cursor:pointer;background:var(--surface);border:1px solid var(--line)}
 .gal img{width:100%;height:auto;transition:transform .5s var(--ease)}
-.gal figure:hover img{transform:scale(1.05)}
+@media (hover:hover) and (pointer:fine){.gal figure:hover img{transform:scale(1.05)}}
 .gal figcaption{padding:.8rem 1rem;font-size:.92rem;font-weight:600;font-family:var(--font-display)}
 .gal__ph{aspect-ratio:var(--ar,4/3);display:grid;place-items:center;background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 55%,#fff))}
 .gal__ph svg{width:52px;height:52px;opacity:.85}
@@ -601,7 +617,7 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
   padding:.5rem 1.1rem;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);
   cursor:pointer;font-family:var(--font-display);font-weight:700;font-size:.93rem;transition:.2s;
 }
-.chip:hover{border-color:var(--sig)}
+@media (hover:hover) and (pointer:fine){.chip:hover{border-color:var(--sig)}}
 .chip.on{background:var(--sig-d);color:#fff;border-color:var(--sig-d)}
 
 .lb{position:fixed;inset:0;z-index:80;background:rgba(20,14,10,.94);display:none;place-items:center;padding:2rem}
@@ -622,6 +638,9 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
 .field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.1rem}
 .field label{font-weight:700;font-size:.94rem;font-family:var(--font-display)}
 .field input,.field textarea,.field select{
+  /* iOS zooms into any field under 16px and never zooms back out. This only
+     held by coincidence (phone body text happens to be 16px) - now it's pinned */
+  font-size:max(16px,1em);
   padding:.8rem 1rem;border:1.5px solid var(--line);border-radius:var(--r-input);
   background:var(--surface);transition:border-color .2s,box-shadow .2s;
 }
@@ -638,7 +657,7 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
 
 /* ---------- contact rows ---------- */
 .ctc{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.25rem;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--line);transition:.25s}
-.ctc:hover{transform:translateY(-3px);box-shadow:var(--shadow-m);border-color:var(--sig-d)}
+@media (hover:hover) and (pointer:fine){.ctc:hover{transform:translateY(-3px);box-shadow:var(--shadow-m);border-color:var(--sig-d)}}
 .ctc__ico{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;flex-shrink:0}
 .ctc__ico svg{width:23px;height:23px}
 /* these must be block: as inline spans the label and value ran together and
@@ -654,18 +673,18 @@ html[dir="rtl"] .ctc__v{text-align:right}
 .ftr h4{font-family:var(--font-display);font-size:1rem;margin-bottom:.8rem}
 .ftr ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:.45rem}
 .ftr a{color:var(--ink-2);font-size:.95rem;transition:color .2s}
-.ftr a:hover{color:var(--sig-text)}
+@media (hover:hover) and (pointer:fine){.ftr a:hover{color:var(--sig-text)}}
 .ftr__bar{margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.88rem;color:var(--ink-2)}
 .social{display:flex;gap:.5rem;margin-top:.9rem}
 .social a{width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center;transition:.2s}
-.social a:hover{background:var(--sig-d);border-color:var(--sig-d);color:#fff;transform:translateY(-3px)}
+@media (hover:hover) and (pointer:fine){.social a:hover{background:var(--sig-d);border-color:var(--sig-d);color:#fff;transform:translateY(-3px)}}
 .social svg{width:19px;height:19px}
 
 /* ---------- page banner ---------- */
 .banner{position:relative;overflow:hidden;padding-block:clamp(2.5rem,5vw,4rem);background:var(--bg-2);border-bottom:1px solid var(--line)}
 .banner h1{margin-bottom:.5rem}
 .crumb{font-size:.9rem;color:var(--ink-2);margin-bottom:.6rem}
-.crumb a:hover{color:var(--sig-text)}
+@media (hover:hover) and (pointer:fine){.crumb a:hover{color:var(--sig-text)}}
 
 /* ============================================================
    DOODLE + TEXTURE LAYER
@@ -720,19 +739,19 @@ body::after{
   box-shadow:0 6px 0 -1px color-mix(in srgb,var(--line) 85%,transparent),
              0 16px 26px -16px rgba(94,74,50,.35);
 }
-.card--lift:hover,.ctc:hover{
+@media (hover:hover) and (pointer:fine){.card--lift:hover,.ctc:hover{
   transform:translateY(-5px);
   box-shadow:0 11px 0 -1px color-mix(in srgb,var(--sig) 30%,var(--line)),
              0 26px 34px -18px rgba(94,74,50,.4);
-}
+}}
 .card--lift:active,.ctc:active{
   transform:translateY(2px);
   box-shadow:0 2px 0 -1px color-mix(in srgb,var(--line) 85%,transparent),
              0 8px 14px -10px rgba(94,74,50,.3);
 }
 .age{box-shadow:0 6px 0 -1px color-mix(in srgb,var(--line) 85%,transparent),0 16px 26px -16px rgba(94,74,50,.3)}
-.age:hover{transform:translateY(-6px);
-  box-shadow:0 12px 0 -1px color-mix(in srgb,var(--c) 55%,var(--line)),0 26px 34px -18px rgba(94,74,50,.38)}
+@media (hover:hover) and (pointer:fine){.age:hover{transform:translateY(-6px);
+  box-shadow:0 12px 0 -1px color-mix(in srgb,var(--c) 55%,var(--line)),0 26px 34px -18px rgba(94,74,50,.38)}}
 .age:active{transform:translateY(2px);
   box-shadow:0 2px 0 -1px color-mix(in srgb,var(--line) 85%,transparent),0 8px 14px -10px rgba(94,74,50,.3)}
 .age[aria-selected="true"]{
@@ -747,16 +766,16 @@ body::after{
   box-shadow:0 6px 0 0 color-mix(in srgb,var(--sig-d) 62%,#000),
              0 14px 22px -12px color-mix(in srgb,var(--sig-d) 75%,transparent);
 }
-.btn--primary:hover{transform:translateY(-2px);
+@media (hover:hover) and (pointer:fine){.btn--primary:hover{transform:translateY(-2px);
   box-shadow:0 8px 0 0 color-mix(in srgb,var(--sig-d) 62%,#000),
-             0 20px 28px -14px color-mix(in srgb,var(--sig-d) 75%,transparent)}
+             0 20px 28px -14px color-mix(in srgb,var(--sig-d) 75%,transparent)}}
 .btn--primary:active{transform:translateY(5px);
   box-shadow:0 1px 0 0 color-mix(in srgb,var(--sig-d) 62%,#000),
              0 4px 10px -8px color-mix(in srgb,var(--sig-d) 75%,transparent)}
 .btn--ghost{border-color:var(--line);
   box-shadow:0 6px 0 -1px color-mix(in srgb,var(--line) 85%,transparent)}
-.btn--ghost:hover{transform:translateY(-2px);
-  box-shadow:0 8px 0 -1px color-mix(in srgb,var(--sig) 40%,var(--line))}
+@media (hover:hover) and (pointer:fine){.btn--ghost:hover{transform:translateY(-2px);
+  box-shadow:0 8px 0 -1px color-mix(in srgb,var(--sig) 40%,var(--line))}}
 .btn--ghost:active{transform:translateY(4px);box-shadow:0 1px 0 -1px var(--line)}
 
 /* tiles read as thick slabs */
@@ -836,6 +855,15 @@ html.js .rv.in{opacity:1;transform:none}
   .hero__cta .btn{width:100%}
   .stats{grid-template-columns:1fr 1fr}
 }
+
+/* ---------- press feedback ---------- */
+/* the controls that had no :active state. With the tap flash gone this is the
+   only sign a tap landed, so it shows on finger-down, not on release */
+.nav__link:active,.menu a:active,.drawer__grp a:active,.langtog button:active{background:var(--sig-soft)}
+.burger,.drawer__grp a{transition:transform .12s ease-out,background .15s}
+.burger:active,.social a:active{transform:scale(.92)}
+.gal figure:active{opacity:.82}   /* instant: its transform rides a slow .5s zoom */
+.peek:active{opacity:.65}
 
 /* ---------- motion preferences ---------- */
 @media (prefers-reduced-motion:reduce){
@@ -959,7 +987,7 @@ html.hk-editing [data-edit].hk-changed{
   color:var(--sig-text);border-bottom:3px solid color-mix(in srgb,var(--sig) 45%,transparent);
   padding-bottom:2px;transition:gap .2s var(--ease),border-color .2s;
 }
-.peek:hover{gap:.8rem;border-bottom-color:var(--sig)}
+@media (hover:hover) and (pointer:fine){.peek:hover{gap:.8rem;border-bottom-color:var(--sig)}}
 .peek svg{width:17px;height:17px}
 html[dir="rtl"] .peek svg{transform:scaleX(-1)}   /* arrow points the way we read */
 
@@ -973,8 +1001,8 @@ html[dir="rtl"] .peek svg{transform:scaleX(-1)}   /* arrow points the way we rea
   box-shadow:0 5px 0 -1px color-mix(in srgb,var(--line) 85%,transparent);
   transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s;
 }
-.door:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--c) 55%,var(--line));
-  box-shadow:0 9px 0 -1px color-mix(in srgb,var(--c) 45%,var(--line)),0 20px 26px -16px rgba(94,74,50,.35)}
+@media (hover:hover) and (pointer:fine){.door:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--c) 55%,var(--line));
+  box-shadow:0 9px 0 -1px color-mix(in srgb,var(--c) 45%,var(--line)),0 20px 26px -16px rgba(94,74,50,.35)}}
 .door:active{transform:translateY(2px);box-shadow:0 2px 0 -1px var(--line)}
 .door__ico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex-shrink:0}
 .door__ico svg{width:22px;height:22px}
