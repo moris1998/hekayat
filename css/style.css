@@ -577,6 +577,19 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
 .mate--lead .mate__role{color:var(--pink-d);font-size:.9rem}
 .mate--lead .mate__line{font-size:1.02rem}
 
+/* Sahera's qualifications - one list, two homes (management page, her team card) */
+.creds{list-style:none;margin:0;padding:0;display:grid;gap:.55rem}
+.creds li{display:flex;align-items:flex-start;gap:.6rem;font-weight:600;line-height:1.5}
+.creds li svg{width:20px;height:20px;flex-shrink:0;margin-top:.15em;color:var(--orange-d)}
+.creds-card{
+  background:var(--surface);border:3px solid var(--ink);border-radius:var(--r-card);
+  padding:clamp(1.2rem,3vw,1.7rem);box-shadow:6px 6px 0 var(--orange);
+}
+.creds-card h3{margin:0 0 .9rem;color:var(--orange-d)}
+.creds__label{margin:1rem 0 .5rem;font-weight:800;font-family:var(--font-display);color:var(--pink-d)}
+.mate--lead .creds li{font-size:.95rem}
+.mate--lead .creds li svg{color:var(--pink-d)}
+
 .mates__intro{
   margin:clamp(2rem,4vw,2.8rem) 0 0;text-align:center;
   font-family:var(--font-display);font-weight:700;font-size:1.05rem;color:var(--green-d);

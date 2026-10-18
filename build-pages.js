@@ -38,6 +38,11 @@ const roomsTour = () => `<div class="rooms">
    with nothing to read, and neither search nor a screen reader sees a thing. */
 const TEAM = B.C('team.json');
 
+/* Sahera's qualifications, from team.json. The management page and her card on
+   the team page both render this one list, so the two can never disagree. */
+const credList = () => `<ul class="creds">${(TEAM.director.credentials || [])
+  .map(c => `<li>${svg('badge')}<span>${t(c.ar, c.he)}</span></li>`).join('')}</ul>`;
+
 const teamCard = (p, lead = false) => {
   const role = p.role_ar ? tb('p', p.role_ar, p.role_he, 'mate__role') : '';
   return `<figure class="mate${lead ? ' mate--lead' : ''} rv">
@@ -46,6 +51,8 @@ const teamCard = (p, lead = false) => {
       ${tb('h3', p.name_ar, p.name_he, 'mate__name')}
       ${role}
       ${p.ar ? tb('p', p.ar, p.he, 'mate__line') : ''}
+      ${p.credentials && p.credentials.length
+        ? tb('p', 'حاصلة على:', 'בעלת:', 'creds__label') + credList() : ''}
     </figcaption>
   </figure>`;
 };
@@ -178,7 +185,10 @@ P.push({ slug:'management', sig:'orange',
   <div class="wrap" style="max-width:820px">
     <div class="stack" style="margin-bottom:2.2rem">
       ${tb('p','منذ عشرين عامًا قامت السيدة ساهرة نصرالله ببناء حضانة حكايات، وتولّت إدارتها طوال هذه السنين بأمانة ومهنية، وبالكثير من الإبداع المبني على المعرفة والعلم.','לפני עשרים שנה הקימה הגברת סאהרה נסראללה את מעון חכאיאת, וניהלה אותו לאורך כל השנים במסירות ובמקצועיות, עם יצירתיות רבה שנשענת על ידע ולמידה.','lead')}
-      ${tb('p','السيدة ساهرة تحمل لقبًا جامعيًا في علم التربية، وأنهت بامتياز شهادة إدارة حضانات، إضافة إلى شهادات في مجال التصميم، وأخرى كمدرّبة تنمية بشرية، وشهادة في علم البرمجة اللغوية العصبية.','הגברת סאהרה בעלת תואר אקדמי בחינוך, סיימה בהצטיינות תעודת ניהול מעונות, ולצידן תעודות בתחום העיצוב, הכשרה כמאמנת לפיתוח אישי ותעודה ב-NLP.')}
+      <div class="creds-card">
+        ${tb('h3','مؤهّلات المديرة','ההכשרות של המנהלת')}
+        ${credList()}
+      </div>
       ${tb('p','ومن أهمّ القيم التي تؤمن بها: قيمة احترام الآخر، طفلًا كان أو أهلًا أو طاقمًا، والصدق أداةً لتعزيز هذا الاحترام.','אחד הערכים המרכזיים שהיא מאמינה בהם הוא כבוד לאחר, בין אם הוא ילד, הורה או איש צוות, וכנות ככלי שמחזק את הכבוד הזה.')}
     </div>
     <div class="card" style="border-inline-start:6px solid var(--orange);padding:clamp(1.8rem,4vw,3rem)">
