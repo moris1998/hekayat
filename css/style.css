@@ -817,9 +817,18 @@ body::after{
 /* ---------- reveal on scroll ----------
    Visible by default. Only a page that has confirmed JS (html.js) hides them,
    so no-JS visitors and any failure of the observer still see all content. */
-.rv{transition:opacity .3s var(--ease),transform .3s var(--ease)}
-html.js .rv{opacity:0;transform:translateY(8px)}
-html.js .rv.in{opacity:1;transform:none}
+/* This is where a parent meets the nursery, usually for the first time, so it
+   earns more motion than a tool would: each group arrives as a short cascade
+   (site.js sets --i, 60ms apart), 500ms on a strong ease-out.
+   It's an animation, not a transition, on purpose: a transition here was
+   silently replaced by any element's own (the door cards' hover transition
+   won, so they jumped in instead of fading). And it moves `translate`, not
+   `transform`, so it never fights a hover lift. */
+@keyframes rv-in{from{opacity:0;translate:0 16px}to{opacity:1;translate:0 0}}
+html.js .rv{opacity:0}
+html.js .rv.in{opacity:1;animation:rv-in .5s var(--ease) both;animation-delay:calc(var(--i,0) * 60ms)}
+/* animations never run when printing - print everything at rest */
+@media print{html.js .rv{opacity:1;animation:none}}
 
 /* ---------- responsive ---------- */
 @media (max-width:900px){
@@ -1031,6 +1040,10 @@ html[dir="rtl"] .peek svg{transform:scaleX(-1)}   /* arrow points the way we rea
 /* compact grid of the remaining pages, so the home page can point at
    everything without turning into a wall of links */
 .doors{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+/* the last door (contact) spans the row. With six doors above it, that leaves
+   no card alone in a row at 3 columns or at 2 - keep the count at six if doors
+   are added or removed */
+.doors > .door:last-child{grid-column:1/-1}
 .door{
   display:flex;gap:.9rem;align-items:flex-start;
   background:var(--surface);border:3px solid var(--line);border-radius:var(--r-card);

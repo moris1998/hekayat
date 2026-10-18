@@ -36,7 +36,7 @@ const waNumber = CFG.whatsapp;
 /* schema.org wants HH:MM, but site.json stores the human form (7:30) */
 const pad = t => t.padStart(5, '0');
 /* Bump when css/js change, so a phone that cached the old files reloads them. */
-const ASSET_V = '22';
+const ASSET_V = '24';
 /* The tap-to-edit system (js/edit.js + netlify/functions) is parked. While this
    is false, visitors don't download it and no page carries data-edit markers.
    Set it to true to bring editing back - nothing else needs to change. */
@@ -161,7 +161,6 @@ const NAV = [
     { slug:'believe',    ar:'بماذا نؤمن؟',          he:'במה אנחנו מאמינים?',   icon:'heart',  c:'purple' },
     { slug:'management', ar:'إدارة تسعى للأفضل',    he:'הנהלה ששואפת למיטב',   icon:'star',   c:'orange' },
     { slug:'team',       ar:'الطاقم أصل الحكاية',   he:'הצוות, לב הסיפור',     icon:'spark',  c:'green'  },
-    { slug:'license',    ar:'شهادة ترخيص',          he:'תעודת רישוי',          icon:'badge',  c:'teal'   },
   ]},
   { label:{ar:'يومنا في حكايات', he:'היום שלנו'}, children:[
     { slug:'building', ar:'مبنى وصفوف حكايات', he:'המבנה והכיתות',        icon:'build', c:'cyan'   },
@@ -437,10 +436,10 @@ const home = {
 <section class="section section--tint">
   <div class="wrap">
     <div class="stats">
-      <div style="--c:var(--pink)"><div class="stat__n"><span data-count="800">800</span> <span style="font-size:.55em">${t('م²','מ"ר')}</span></div><div class="stat__l">${t('ساحات وملاعب مجهّزة','חצרות ומגרשים מאובזרים')}</div></div>
-      <div style="--c:var(--blue)"><div class="stat__n" data-count="4">4</div><div class="stat__l">${t('مجموعات عمرية صغيرة','קבוצות גיל קטנות')}</div></div>
-      <div style="--c:var(--green)"><div class="stat__n" data-count="3">3</div><div class="stat__l">${t('وجبات طازجة كل يوم','ארוחות טריות בכל יום')}</div></div>
-      <div style="--c:var(--orange)"><div class="stat__n" data-count="8">8</div><div class="stat__l">${t('ساعات من المتعة والتعلّم يوميًا','שעות של הנאה ולמידה בכל יום')}</div></div>
+      <div class="rv" style="--c:var(--pink)"><div class="stat__n"><span data-count="800">800</span> <span style="font-size:.55em">${t('م²','מ"ר')}</span></div><div class="stat__l">${t('ساحات وملاعب مجهّزة','חצרות ומגרשים מאובזרים')}</div></div>
+      <div class="rv" style="--c:var(--blue)"><div class="stat__n" data-count="4">4</div><div class="stat__l">${t('مجموعات عمرية صغيرة','קבוצות גיל קטנות')}</div></div>
+      <div class="rv" style="--c:var(--green)"><div class="stat__n" data-count="3">3</div><div class="stat__l">${t('وجبات طازجة كل يوم','ארוחות טריות בכל יום')}</div></div>
+      <div class="rv" style="--c:var(--orange)"><div class="stat__n" data-count="8">8</div><div class="stat__l">${t('ساعات من المتعة والتعلّم يوميًا','שעות של הנאה ולמידה בכל יום')}</div></div>
     </div>
   </div>
 </section>
@@ -476,13 +475,13 @@ ${ageBlock()}
       <h2 data-lang="ar">ما الذي يجعل حكايات <span class="scribble">مختلفة</span></h2><h2 data-lang="he">מה עושה את חכאיאת <span class="scribble">אחרת</span></h2>
     </div>
     <div class="split" style="--sp:1.3fr 1fr">
-      <div class="tile" style="background:var(--blue-d)">
+      <div class="tile rv" style="background:var(--blue-d)">
         <div class="tile__deco"></div>
         <div class="card__ico" style="background:rgba(255,255,255,.2);color:#fff">${svg('build')}</div>
         ${tb('h3','مبنى شفاعمري عريق','מבנה שפרעמי עתיק')}
         ${tb('p','حضانتنا داخل مبنى شفاعمري عريق من نهاية القرن التاسع عشر، يعطي دفء البيت، ومقسّم إلى وحدات بحسب الفئة العمرية. لكل وحدة صفّها وحمّامها ومدخلها الخاص.','המעון שלנו שוכן במבנה שפרעמי עתיק מסוף המאה ה-19, שנותן חמימות של בית, ומחולק ליחידות לפי שכבת גיל. לכל יחידה כיתה, שירותים וכניסה משלה.')}
       </div>
-      <div class="tile" style="background:var(--green-d)">
+      <div class="tile rv" style="background:var(--green-d)">
         <div class="tile__deco"></div>
         <div class="card__ico" style="background:rgba(255,255,255,.2);color:#fff">${svg('pot')}</div>
         ${tb('h3','مطبخ صحّي، ووجبات لذيذة','מטבח בריא, ארוחות טעימות')}
@@ -490,13 +489,13 @@ ${ageBlock()}
       </div>
     </div>
     <div class="cards cols-3" style="margin-top:1.25rem">
-      <div class="card card--lift"><div class="card__ico" style="background:var(--sig-soft);color:var(--pink)">${svg('users')}</div>
+      <div class="card card--lift rv"><div class="card__ico" style="background:var(--sig-soft);color:var(--pink)">${svg('users')}</div>
         ${tb('h3','طاقم يُختار بعناية','צוות שנבחר בקפידה')}
         ${tb('p','مربّيات مؤهّلات حاصلات على شهادات اختصاص في جيل الطفولة المبكرة، ودورة إسعاف أوّلي، ودورة أمن وأمان، وخبرة سنين.','מטפלות מוסמכות בעלות תעודות התמחות בגיל הרך, קורס עזרה ראשונה, קורס ביטחון ובטיחות וניסיון של שנים.')}</div>
-      <div class="card card--lift"><div class="card__ico" style="background:#e7f4ff;color:var(--blue)">${svg('leaf')}</div>
+      <div class="card card--lift rv"><div class="card__ico" style="background:#e7f4ff;color:var(--blue)">${svg('leaf')}</div>
         ${tb('h3','أيام الحارة الحلوة','ימי השכונה המתוקים')}
         ${tb('p','مراكز تراب ورمل عملاقة تعيد للأطفال متعة اللعب التي فقدها جيل اليوم، وتطوّر حواسهم وحركتهم.','מרכזי עפר וחול ענקיים שמחזירים לילדים את הנאת המשחק שאבדה לדור של היום.')}</div>
-      <div class="card card--lift"><div class="card__ico" style="background:#fff2e0;color:var(--orange)">${svg('music')}</div>
+      <div class="card card--lift rv"><div class="card__ico" style="background:#fff2e0;color:var(--orange)">${svg('music')}</div>
         ${tb('h3','فعاليات مشمولة بالرسوم','חוגים כלולים בשכר הלימוד')}
         ${tb('p','مسرح دمى، موسيقى، حركة لجيل الطفولة، سفينة نوح، والطبّاخ الصغير. كلّها ضمن رسوم التسجيل.','תיאטרון בובות, מוזיקה, תנועה, תיבת נוח והשף הקטן. הכול כלול בדמי הרישום.')}</div>
     </div>
@@ -513,7 +512,7 @@ ${ageBlock()}
         ${peek('daily','شوفوا البرنامج كامل','לצפייה בתוכנית המלאה')}
       </div>
       <div class="tl tl--peek">
-        ${C('daily.json').rows.slice(0,5).map(d=>`<div class="tl__item" style="--c:var(--${d.colour})">
+        ${C('daily.json').rows.slice(0,5).map(d=>`<div class="tl__item rv" style="--c:var(--${d.colour})">
           <div class="tl__time" dir="ltr">${d.from} - ${d.to}</div>
           ${tb('h4',d.ar,d.he)}</div>`).join('')}
       </div>
@@ -529,9 +528,9 @@ ${ageBlock()}
       ${tb('p','صفوف واسعة وعالية، قاعة بيوت وشجرة، ولوحة أهل عند الباب. هذه صور حقيقية من داخل حكايات.','כיתות רחבות וגבוהות, אולם הבתים והעץ, ולוח הורים ליד הדלת. אלה תמונות אמיתיות מתוך חכאיאת.','lead')}
     </div>
     <div class="mosaic">
-      ${photo('classroom-2.jpg','صفّ واسع بسقف خشبي عالٍ وجدارية الفيل','כיתה רחבה עם תקרת עץ גבוהה וציור הפיל','photo--wide')}
-      ${photo('parents-board.jpg','لوحة الأهل وبرنامج اليوم عند الباب','לוח ההורים ותוכנית היום ליד הדלת','photo--wide')}
-      ${photo('tree-room.jpg','قاعة الشجرة وبيوت حكايات','אולם העץ ובתי חכאיאת','photo--wide')}
+      ${photo('classroom-2.jpg','صفّ واسع بسقف خشبي عالٍ وجدارية الفيل','כיתה רחבה עם תקרת עץ גבוהה וציור הפיל','rv photo--wide')}
+      ${photo('parents-board.jpg','لوحة الأهل وبرنامج اليوم عند الباب','לוח ההורים ותוכנית היום ליד הדלת','rv photo--wide')}
+      ${photo('tree-room.jpg','قاعة الشجرة وبيوت حكايات','אולם העץ ובתי חכאיאת','rv photo--wide')}
     </div>
     <div style="text-align:center;margin-top:1.6rem">${peek('gallery','شوفوا كل الصور','לכל התמונות')}</div>
   </div>
@@ -548,7 +547,7 @@ ${ageBlock()}
       ${[['1','purple','كل طفل فريد','כל ילד ייחודי','لا نقيس طفلًا بطفل. ينمو ضمن مجموعته، لكن بحسب قدراته هو، لا بحسب المعدّل.','אנחנו לא מודדים ילד מול ילד. הוא גדל בתוך הקבוצה, אבל לפי היכולות שלו.'],
         ['2','pink','أطفالكم أمانة','ילדיכם פיקדון','نؤمن أن أطفالكم أمانة نُحاسب عليها، ولذا نطلب منكم المساندة والتواصل.','אנחנו מאמינים שילדיכם הם פיקדון שעליו אנו נותנים דין וחשבון.'],
         ['3','blue','للحياة الروحية مكان','לחיים הרוחניים יש מקום','جزء طبيعي من يوم الطفل، لا درسًا منفصلًا عنه.','חלק טבעי מהיום של הילד, לא שיעור נפרד.']]
-        .map(([n,c,ar,he,par,phe])=>`<div class="card" style="border-top:5px solid var(--${c})">
+        .map(([n,c,ar,he,par,phe])=>`<div class="card rv" style="border-top:5px solid var(--${c})">
           <div style="font-family:var(--font-display);font-weight:800;font-size:2.4rem;line-height:1;color:color-mix(in srgb,var(--${c}) 62%,var(--mix));margin-bottom:.3rem">${n}</div>
           ${tb('h3',ar,he)}${tb('p',par,phe)}</div>`).join('')}
     </div>
@@ -570,7 +569,7 @@ ${ageBlock()}
            ['badge','green','تأهيل أكاديمي','הכשרה אקדמית'],
            ['clock','blue','خبرة سنين','ניסיון של שנים'],
            ['chat','orange','التواصل مع الأهل','קשר עם ההורים']]
-          .map(([ic,c,ar,he])=>`<div style="display:flex;align-items:center;gap:.85rem;padding:.85rem 1.1rem;background:var(--surface);border:2.5px solid var(--line);border-radius:18px">
+          .map(([ic,c,ar,he])=>`<div class="rv" style="display:flex;align-items:center;gap:.85rem;padding:.85rem 1.1rem;background:var(--surface);border:2.5px solid var(--line);border-radius:18px">
             <span style="width:34px;height:34px;border-radius:11px;flex-shrink:0;display:grid;place-items:center;background:color-mix(in srgb,var(--${c}) 15%,transparent);color:color-mix(in srgb,var(--${c}) 62%,var(--mix))">${svg(ic)}</span>
             <strong style="font-family:var(--font-display)">${t(ar,he)}</strong></div>`).join('')}
       </div>
@@ -580,7 +579,7 @@ ${ageBlock()}
 
 <section class="section">
   <div class="wrap">
-    <div class="quote">
+    <div class="quote rv">
       <span class="quote__mark">”</span>
       <div style="font-weight:700;opacity:.85;margin-bottom:.9rem;position:relative;z-index:1">${t('حكمة هذا الشهر','חוכמת החודש')}</div>
       <blockquote data-lang="ar">${WISDOM.current.ar}</blockquote>
@@ -603,9 +602,8 @@ ${ageBlock()}
          ['guidance','book','purple','إرشاد','הדרכה וליווי','مرشدة تربوية ترافق الطاقم والإدارة كل شهر.','מדריכה חינוכית מלווה את הצוות מדי חודש.'],
          ['rules','shield','blue','قوانين حكايات','הנהלים','الاستقبال، الصحّة، الأغراض، والشهرية.','קבלה, בריאות, ציוד ותשלומים.'],
          ['hours','cal','teal','أيام وساعات العمل','ימים ושעות','الإثنين حتى الجمعة، ومخيّم صيفي.','שני עד שישי, ומחנה קיץ.'],
-         ['license','badge','teal','شهادة ترخيص','תעודת רישוי','ترخيصنا ومعايير الأمان والكاميرات.','הרישוי, תקני הבטיחות והמצלמות.'],
          ['contact','chat','pink','تواصلوا معنا','צרו קשר','هاتف، واتساب، ولوحة الأهل في المدخل.','טלפון, וואטסאפ ולוח ההורים בכניסה.']]
-        .map(([slug,ic,c,ar,he,par,phe])=>`<a class="door" href="${href(slug)}" style="--c:var(--${c})">
+        .map(([slug,ic,c,ar,he,par,phe])=>`<a class="door rv" href="${href(slug)}" style="--c:var(--${c})">
           <span class="door__ico" style="background:color-mix(in srgb,var(--${c}) 15%,transparent);color:color-mix(in srgb,var(--${c}) 62%,var(--mix))">${svg(ic)}</span>
           <span>${tb('h3',ar,he)}${tb('p',par,phe)}</span></a>`).join('')}
     </div>

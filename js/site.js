@@ -70,11 +70,17 @@
        intersecting. Without it, content skipped in one jump (anchor link, restored
        scroll position, fast wheel) would stay at opacity 0 forever. */
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((en, i) => {
+      /* Elements that arrive in the same callback entered together - a row of
+         cards, a group of stats - so each gets its place in that batch as --i
+         and the CSS turns it into a 60ms cascade. Counting only the entering
+         ones means a row starts from its own first card. */
+      let k = 0;
+      entries.forEach(en => {
         if (!en.isIntersecting) return;
         const el = en.target;
         io.unobserve(el);
-        setTimeout(() => el.classList.add('in'), Math.min(i, 6) * 70);
+        el.style.setProperty('--i', Math.min(k++, 6));
+        el.classList.add('in');
       });
     }, { threshold: 0, rootMargin: '3000px 0px -8% 0px' });
     rvs.forEach(el => io.observe(el));

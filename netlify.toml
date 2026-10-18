@@ -19,6 +19,17 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# The license page was removed (no license photo yet). Its safety checklist and
+# camera note moved to the building page, so old links land there.
+[[redirects]]
+  from = "/license"
+  to = "/building#safety"
+  status = 301
+[[redirects]]
+  from = "/license.html"
+  to = "/building#safety"
+  status = 301
+
 # ------------------------------------------------------------- launch
 # The site publishes the whole repo folder, so without these, anyone could open
 # the setup notes, build scripts and parked login code on the nursery's domain.
