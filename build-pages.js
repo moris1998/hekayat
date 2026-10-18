@@ -64,7 +64,7 @@ const teamCard = (p, lead = false) => {
    Sahera wrote the tributes about her staff, not about herself */
 const teamGrid = () => `
   ${teamCard(TEAM.director, true)}
-  ${tb('p','وهذه الكلمات كتبتها ساهرة عن كل واحدة منهنّ.','ואת המילים האלה כתבה סאהרה על כל אחת מהן.','mates__intro')}
+  ${tb('p','كلمات صاغتها المديرة بكل تقدير واعتزاز، تعبيرًا عن عطاء كل معلمة وتميّزها.','מילים שניסחה המנהלת בהערכה ובגאווה, כביטוי לנתינה ולייחוד של כל מטפלת.','mates__intro')}
   <div class="mates">${TEAM.team.map(p => teamCard(p)).join('')}</div>`;
 
 const P = [];
