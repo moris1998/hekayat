@@ -10,12 +10,17 @@
    ============================================================ */
 
 :root{
-  /* This site is light only, deliberately. Android browsers (Chrome's
-     "Auto Dark Theme for Web Contents", Samsung Internet's Dark mode,
-     WebView force-dark) will invert any page that does not say otherwise.
-     `only light` is the documented opt-out; the explicit background and
-     colour on <html> below give the algorithm nothing to invert. */
-  color-scheme: only light;
+  /* This site LOOKS light only, deliberately - but it DECLARES support for
+     both schemes. Android in-app browsers (WhatsApp, Instagram, Facebook all
+     open links in a WebView) darken any page that doesn't offer its own dark
+     theme, and `only light` is exactly what they treat as "safe to darken":
+     links shared on WhatsApp opened dark on Android. Declaring `light dark`
+     tells WebView, Chrome's Auto Dark Theme and Samsung Internet that the page
+     handles dark itself, so they leave it alone - and every colour below is
+     the same in both schemes, so dark-mode visitors see the light site.
+     Form controls and the scrollbar are pinned light separately (below), since
+     browsers would otherwise draw those dark once dark is declared. */
+  color-scheme: light dark;
 
   /* brand palette, sampled from the logo artwork */
   --pink:#e8117c;
@@ -85,9 +90,20 @@ body{
 html{
   -webkit-text-size-adjust:100%;scroll-behavior:smooth;
   scroll-padding-top:calc(var(--nav-h) + 16px);
-  color-scheme:only light;
-  background-color:#fffcf5;   /* stated on <html> too, so forced-dark has an explicit value */
+  color-scheme:light dark;    /* see :root - declared, not used: the site stays light */
+  background-color:#fffcf5;   /* explicit, so no browser default ever shows through */
   color:#2c2621;
+  scrollbar-color:#cfc3ae #fffcf5;   /* light scrollbar even when the OS is dark */
+}
+/* Form controls, pinned light: once a page declares dark support, browsers
+   draw native inputs, selects and their pop-ups dark in dark mode. */
+input,textarea,select,option,button{color-scheme:light}
+/* Dark mode, identical to light. Some WebViews decide "this page supports dark"
+   by finding a prefers-color-scheme rule, not only from color-scheme - so the
+   rule exists, and it changes nothing. */
+@media (prefers-color-scheme: dark){
+  html{background-color:#fffcf5;color:#2c2621}
+  body{background-color:#fffcf5;color:#2c2621}
 }
 body{
   font-family:var(--font-body);
