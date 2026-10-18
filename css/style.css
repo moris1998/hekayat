@@ -269,17 +269,21 @@ p{max-width:66ch}
   transition:transform .6s var(--ease);
 }
 .snap{
-  position:absolute;margin:0;width:50%;
-  background:#fff;padding:9px 9px 0;
+  position:absolute;display:block;margin:0;width:50%;
+  background:#fff;padding:9px 9px 0;color:inherit;text-decoration:none;
   border:3px solid var(--ink);border-radius:6px;
   box-shadow:6px 6px 0 var(--c);
   transition:rotate .35s var(--ease),translate .35s var(--ease),box-shadow .35s var(--ease);
 }
 .snap img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:2px}
-.snap figcaption{
+.snap__cap{
+  display:block;
   font-family:var(--font-display);font-weight:800;font-size:1.02rem;line-height:1.2;
   color:var(--cd);text-align:center;padding:.5rem 0 .6rem;
 }
+/* each print is a link now: press it down on finger-down, like the clay buttons */
+.snap:active{translate:0 3px;box-shadow:3px 3px 0 var(--c);transition-duration:.1s}
+.snap:focus-visible{outline:3px solid var(--cd);outline-offset:4px}
 /* a strip of tape across the top edge */
 .snap::before{
   content:"";position:absolute;z-index:1;top:-13px;left:50%;
@@ -845,7 +849,7 @@ html.js .rv.in{opacity:1;transform:none}
   .hero__art > img{width:min(44%,166px)}
   .snaps{width:min(100%,350px);margin-top:.4rem}
   .snap{width:37%;padding:5px 5px 0;border-width:2.5px;box-shadow:4px 4px 0 var(--c)}
-  .snap figcaption{font-size:.74rem;padding:.3rem 0 .4rem}
+  .snap__cap{font-size:.74rem;padding:.3rem 0 .4rem}
   .snap::before{width:46px;height:16px;top:-9px}
   .cols-2,.cols-3{grid-template-columns:1fr}
   .ages{grid-template-columns:1fr}
@@ -855,6 +859,10 @@ html.js .rv.in{opacity:1;transform:none}
   .hero__cta .btn{width:100%}
   .stats{grid-template-columns:1fr 1fr}
 }
+
+/* in-page anchors (the hero prints link to #rooms and #yards) land below the
+   sticky header instead of under it */
+.sec-head[id]{scroll-margin-top:calc(var(--nav-h) + 1.5rem)}
 
 /* ---------- press feedback ---------- */
 /* the controls that had no :active state. With the tap flash gone this is the

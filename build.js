@@ -36,7 +36,7 @@ const waNumber = CFG.whatsapp;
 /* schema.org wants HH:MM, but site.json stores the human form (7:30) */
 const pad = t => t.padStart(5, '0');
 /* Bump when css/js change, so a phone that cached the old files reloads them. */
-const ASSET_V = '17';
+const ASSET_V = '19';
 
 /* --------------------------------------------------------------- icons
    Stroke glyphs follow the Tabler Icons geometry (MIT), 24x24 grid,
@@ -112,14 +112,16 @@ const photo = (file, ar, he, mod='') =>
      <figcaption data-lang="ar">${ar}</figcaption><figcaption data-lang="he">${he}</figcaption>
    </figure>`;
 
-/* one instant print in the hero: a real room, taped down, captioned by class.
-   These are above the fold, so they load eagerly from small square crops in
-   assets/photos/hero/ rather than the full-size room photos. */
-const snap = (file, ar, he, c, cls, first = false) =>
-  `<figure class="snap ${cls}" style="--c:var(--${c});--cd:var(--${c}-d)">
-     <img src="assets/photos/hero/${file}" alt="${ar}" width="640" height="640" decoding="async"${first ? ' fetchpriority="high"' : ''}>
-     <figcaption>${t(ar, he)}</figcaption>
-   </figure>`;
+/* one instant print in the hero, taped down and captioned with the part of the
+   nursery it opens. Each is a link, so the caption is its name and the photo
+   is decorative (alt=""), or a screen reader would say the label twice.
+   Above the fold, so they load eagerly from small square crops in
+   assets/photos/hero/ rather than the full-size photos. */
+const snap = (file, ar, he, c, cls, to, first = false) =>
+  `<a class="snap ${cls}" href="${to}" style="--c:var(--${c});--cd:var(--${c}-d)">
+     <img src="assets/photos/hero/${file}" alt="" width="640" height="640" decoding="async"${first ? ' fetchpriority="high"' : ''}>
+     <span class="snap__cap">${t(ar, he)}</span>
+   </a>`;
 
 /* ----------------------------------------------------------- editable
    te() is t() plus a marker saying which file and which key inside it a
@@ -411,9 +413,11 @@ const home = {
           <span style="width:30px;height:30px;background:var(--blue);inset-inline-start:12%;bottom:6%;animation-delay:-5.2s"></span>
         </div>
         <div class="snaps">
-          ${snap('zaghalil-cribs.jpg','صفّ الزغاليل','כיתת הזע\'אליל','pink','s1',true)}
-          ${snap('yard-main.jpg','ساحاتنا','החצרות שלנו','green','s2')}
-          ${snap('sisan-elephant.jpg','صفّ الصيصان','כיתת הציסאן','orange','s3')}
+          ${/* Sahera sits in s2: the front print on phones, and on desktop the one
+               nothing lies over - her face is never covered */''}
+          ${snap('yard-main.jpg','ساحاتنا','החצרות שלנו','green','s1',href('building')+'#yards',true)}
+          ${snap('sahera.jpg','طاقمنا','הצוות שלנו','pink','s2',href('team'))}
+          ${snap('sisan-elephant.jpg','صفوفنا','הכיתות שלנו','orange','s3',href('building')+'#rooms')}
         </div>
       </div>
     </div>

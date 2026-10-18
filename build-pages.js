@@ -332,12 +332,12 @@ P.push({ slug:'building', sig:'cyan',
 
 <section class="section section--tint">
   <div class="wrap">
-    <div class="sec-head">
+    <div class="sec-head" id="rooms">
       ${tb('h2','جولة في صفوفنا','סיור בכיתות שלנו')}
       ${tb('p','لكل مجموعة غرفتها، وكل غرفة مبنية على عمر أصحابها.','לכל קבוצה החדר שלה, וכל חדר בנוי לפי הגיל של בעליו.')}
     </div>
     ${roomsTour()}
-    <div class="sec-head" style="margin-top:clamp(2.5rem,5vw,4rem)">
+    <div class="sec-head" id="yards" style="margin-top:clamp(2.5rem,5vw,4rem)">
       ${tb('h2','وساحاتنا في الخارج','והחצרות שלנו בחוץ')}
       ${tb('p','عشب صناعي، زحاليق بمقاس الصغار، ومظلّات تكسر الشمس.','דשא סינתטי, מגלשות במידת הקטנים, וסככות ששוברות את השמש.')}
     </div>
