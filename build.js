@@ -425,7 +425,7 @@ const home = {
           ${/* Sahera sits in s2: the front print on phones, and on desktop the one
                nothing lies over - her face is never covered */''}
           ${snap('yard-main.jpg','ساحاتنا','החצרות שלנו','green','s1',href('building')+'#yards',true)}
-          ${snap('sahera.jpg','طاقمنا','הצוות שלנו','pink','s2',href('team'))}
+          ${snap('sahera-hd.jpg','طاقمنا','הצוות שלנו','pink','s2',href('team'))}
           ${snap('sisan-elephant.jpg','صفوفنا','הכיתות שלנו','orange','s3',href('building')+'#rooms')}
         </div>
       </div>
