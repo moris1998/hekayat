@@ -1,11 +1,6 @@
 /* حضانة حكايات - pages 2..15. Run `node build.js`. */
 const B = require('./build.js');
-const { SITE, AGES, CREATURE, CFG, WISDOM, GALLERY, svg, t, tb, te, teb, href, layout, banner, doodle, photo, waNumber, OUT, fs, path } = B;
-
-/* a visible marker for copy I drafted rather than took from the brochure,
-   so the client knows exactly what still needs their approval */
-const draft = (ar, he) => `<div style="display:flex;gap:.7rem;align-items:flex-start;padding:1rem 1.2rem;border-radius:16px;background:var(--sig-soft);color:var(--sig);font-size:.92rem;font-weight:600;margin-top:1.5rem" data-draft>
-  <span style="flex-shrink:0">${svg('spark')}</span><span>${t(ar, he)}</span></div>`;
+const { pageUrl, SITE, AGES, CREATURE, CFG, WISDOM, GALLERY, svg, t, tb, te, teb, href, layout, banner, doodle, photo, waNumber, OUT, fs, path } = B;
 
 /* room-by-room tour, driven by content/rooms.json. A class whose photos[]
    is empty still gets its text block - no empty strip, no broken layout. */
@@ -285,13 +280,14 @@ P.push({ slug:'license', sig:'teal',
 <section class="section">
   <div class="wrap">
     <div class="split split--start" style="--sp:.9fr 1.1fr">
-      <div class="card" style="border:2px dashed var(--teal);text-align:center;padding:clamp(2rem,4vw,3rem)">
-        <div style="width:64px;height:64px;margin:0 auto 1rem;color:var(--teal)">${svg('badge')}</div>
+      <div class="card" style="border:3px solid var(--teal);text-align:center;padding:clamp(2rem,4vw,3rem);box-shadow:6px 6px 0 var(--teal)">
+        <div style="width:64px;height:64px;margin:0 auto 1rem;color:var(--teal-d)">${svg('badge')}</div>
         ${tb('h3','شهادة الترخيص','תעודת הרישוי')}
-        ${tb('p','هذا المكان مخصّص لعرض صورة شهادة الترخيص السارية أو ملفّ PDF لها، لتكون متاحة للأهل في أي وقت.','המקום הזה מיועד להצגת תעודת הרישוי בתוקף כתמונה או כקובץ PDF, כך שתהיה זמינה להורים בכל עת.')}
+        ${tb('p','شهادة الترخيص السارية متاحة للاطّلاع عليها في الحضانة، ويسعدنا أن نعرضها عليكم خلال زيارتكم.','תעודת הרישוי בתוקף זמינה לעיון במעון, ונשמח להציג לכם אותה בביקור.')}
+        <a class="btn btn--primary" href="${href('contact')}" style="margin-top:1rem">${svg('chat')}${t('احجزوا زيارة','לתיאום ביקור')}</a>
       </div>
       <div class="stack">
-        ${tb('h2','لماذا نعرض هذا هنا','למה אנחנו מציגים את זה כאן')}
+        ${tb('h2','لماذا يهمّنا أن تعرفوا','למה חשוב לנו שתדעו')}
         ${tb('p','الأهل الذين يتركون طفلًا في عمر ثلاثة شهور يستحقّون أن يعرفوا كل شيء عن المكان الذي يتركونه فيه: ترخيصه، معايير الأمان فيه، ومن يشرف عليه. لا نرى في ذلك عبئًا بل واجبًا.','הורים שמשאירים תינוק בן שלושה חודשים זכאים לדעת הכול על המקום שבו הם משאירים אותו: הרישוי שלו, תקני הבטיחות בו, ומי מפקח עליו. איננו רואים בכך נטל אלא חובה.')}
         <div class="cards" style="gap:.75rem;margin-top:.5rem">
           ${[['وسائل أمان وكاميرات في كل الوحدات','אמצעי בטיחות ומצלמות בכל היחידות'],
@@ -307,7 +303,6 @@ P.push({ slug:'license', sig:'teal',
       ${tb('h3','الكاميرات وخصوصية أطفالكم','המצלמות ופרטיות ילדיכם')}
       ${tb('p','يوجد في الحضانة كاميرات تعمل على مدار اليوم. وبحسب قانون الوزارة، يحقّ للوزارة وحدها فتح ملفاتها.','במעון פועלות מצלמות לאורך כל היום. על פי חוק המשרד, רק למשרד יש הרשאה לפתוח את הקבצים שלהן.')}
     </div>
-    ${draft('أرسلوا لنا صورة شهادة الترخيص ورقمها وتاريخ سريانها، وسنضعها في هذه الصفحة مباشرة.','שלחו לנו את תעודת הרישוי, מספרה ותוקפה, ונציב אותה בדף הזה.')}
   </div>
 </section>` });
 
@@ -316,8 +311,8 @@ P.push({ slug:'building', sig:'cyan',
   title:{ar:'مبنى وصفوف حكايات', he:'המבנה והכיתות'},
   intro:{ar:'مبنى شفاعمري كبير وعريق يعطي شعور الدفء البيتي، و800 متر من الساحات والملاعب في الخارج.',
          he:'מבנה שפרעמי גדול ועתיק שמעניק תחושת חום ביתית, ו-800 מ"ר של חצרות ומגרשים בחוץ.'},
-  desc:{ar:'مبنى حضانة حكايات: وحدات مقسّمة بحسب العمر، ملاعب آمنة 350 م²، ومحطات تراب ورمل.',
-        he:'המבנה של מעון חכאיאת: יחידות לפי גיל, מגרשים בטוחים בשטח 350 מ"ר ותחנות עפר וחול.'},
+  desc:{ar:'مبنى حضانة حكايات: وحدات مقسّمة بحسب العمر، ساحات وملاعب آمنة بمساحة 800 م²، ومحطات تراب ورمل.',
+        he:'המבנה של מעון חכאיאת: יחידות לפי גיל, חצרות ומגרשים בטוחים בשטח 800 מ"ר ותחנות עפר וחול.'},
   body:(p)=>`${banner(p)}
 <section class="section">
   <div class="wrap">
@@ -401,13 +396,12 @@ P.push({ slug:'daily', sig:'orange',
 
 <section class="section section--tint">
   <div class="wrap">
-    <div class="sec-head">${tb('h2','يوم في حكايات','יום בחכאיאת')}</div>
+    <div class="sec-head">${tb('h2','يوم في حكايات','יום בחכאיאת')}${tb('p','هذا برنامج صفّ الصيصان، ولكل صفّ إيقاع قريب منه بحسب أعمار أطفاله.','זה סדר היום של כיתת הציסאן, ולכל כיתה קצב דומה בהתאם לגיל הילדים.')}</div>
     <div class="tl">
       ${DAY.map((d,i)=>`<div class="tl__item rv" style="--c:var(--${d.colour})">
         <div class="tl__time" dir="ltr"><span data-edit="daily.json:rows.${i}.from">${d.from}</span> - <span data-edit="daily.json:rows.${i}.to">${d.to}</span></div>
         ${teb('h4','daily.json',`rows.${i}.ar`,`rows.${i}.he`,d.ar,d.he)}${d.note_ar?teb('p','daily.json',`rows.${i}.note_ar`,`rows.${i}.note_he`,d.note_ar,d.note_he):''}</div>`).join('')}
     </div>
-    ${draft('هذا هو برنامج صفّ الصيصان. لكل صفّ إيقاعه الخاص القريب منه، ويمكننا إضافة جدول لكل مجموعة على حدة إذا رغبتم.','זהו לוח הזמנים של כיתת ציסאן. לכל כיתה קצב משלה, ונשמח להוסיף לוח נפרד לכל קבוצה אם תרצו.')}
   </div>
 </section>` });
 
@@ -448,7 +442,6 @@ P.push({ slug:'kitchen', sig:'green',
       <blockquote data-lang="he">לשאר אנשי הצוות אין רשות לעבוד במטבח.</blockquote>
       <cite>${t('قاعدة ثابتة في حكايات','כלל קבוע בחכאיאת')}</cite>
     </div>
-    ${draft('إذا رغبتم، يمكننا إضافة قائمة الطعام الأسبوعية هنا وتحديثها كل أسبوع، مع الإشارة إلى الحساسيات الغذائية.','אם תרצו, נוכל להוסיף כאן את התפריט השבועי ולעדכן אותו מדי שבוע, כולל ציון אלרגיות למזון.')}
   </div>
 </section>` });
 
@@ -478,7 +471,6 @@ P.push({ slug:'guidance', sig:'purple',
           <div class="card__ico" style="background:color-mix(in srgb,var(--${c}) 14%,transparent);color:var(--${c})">${svg(ic)}</div>
           ${tb('h3',ar,he)}${tb('p',par,phe)}</div>`).join('')}
     </div>
-    ${draft('صيغة هذه الصفحة اقتراح مبدئي. إذا كان لديكم مرشدة أو أخصائية تتعاونون معها، أو برنامج إرشاد محدّد، أرسلوه لنا وسنكتب الصفحة بدقّة.','הנוסח בדף הזה הוא הצעה ראשונית. אם יש לכם מדריכה או מומחית שאתם עובדים איתה, או תוכנית הדרכה מוגדרת, שלחו לנו ונכתוב את הדף במדויק.')}
   </div>
 </section>` });
 
@@ -498,7 +490,6 @@ P.push({ slug:'rules', sig:'blue',
       <button class="acc__btn" aria-expanded="${i===0}"><span class="acc__num">${i+1}</span>${te('rules.json',`items.${i}.ar`,`items.${i}.he`,r.ar,r.he)}${svg('down','chev')}</button>
       <div class="acc__panel" data-open="${i===0}"><div><div class="acc__body">${te('rules.json',`items.${i}.body_ar`,`items.${i}.body_he`,r.body_ar,r.body_he)}</div></div></div>
     </div>`).join('')}
-    ${draft('هذه القوانين صيغة مقترحة مبنية على ما هو معتاد في الحضانات. راجعوها معنا وسنعدّلها لتطابق قوانينكم بالضبط.','הנהלים כאן הם נוסח מוצע המבוסס על המקובל במעונות. עברו עליהם אתנו ונתאים אותם במדויק לנהלים שלכם.')}
   </div>
 </section>` });
 
@@ -536,7 +527,6 @@ P.push({ slug:'hours', sig:'teal',
         </div>
       </div>
     </div>
-    ${draft('إذا كانت هناك عطل ثابتة في السنة (أعياد، عطلة الميلاد، أيام تجهيز)، أرسلوها لنا وسنضيف تقويمًا سنويًا في هذه الصفحة.','אם יש חופשות קבועות בשנה (חגים, חופשת חג המולד, ימי היערכות), שלחו לנו ונוסיף לוח שנתי בדף הזה.')}
   </div>
 </section>` });
 
@@ -572,7 +562,6 @@ P.push({ slug:'wisdom', sig:'pink',
         <p style="font-family:var(--font-display);font-weight:700;font-size:1.12rem;line-height:1.55;color:var(--ink)">${te('wisdom.json',`archive.${i}.ar`,`archive.${i}.he`,w.ar,w.he)}</p>
       </div>`).join('')}
     </div>
-    ${draft('نرسل لكم حكمة كل شهر لتضعوها هنا. يمكننا أيضًا إضافتها تلقائيًا إلى صفحة الفيسبوك في نفس اليوم.','נשמח לקבל מכם את החוכמה מדי חודש כדי להציב אותה כאן. אפשר גם לפרסם אותה אוטומטית בעמוד הפייסבוק באותו יום.')}
   </div>
 </section>` });
 
@@ -603,8 +592,8 @@ P.push({ slug:'gallery', sig:'cyan',
     <div id="gal"></div>
     <div class="empty" id="galempty">
       <div style="color:var(--cyan)">${svg('img')}</div>
-      ${tb('h3','المعرض جاهز وينتظر صوركم','הגלריה מוכנה ומחכה לתמונות שלכם')}
-      ${tb('p','ضعوا صور الحضانة في مجلّد assets/gallery وأضيفوا سطرًا لكل صورة في الملفّ js/gallery-data.js، وستظهر هنا فورًا مع الفلاتر والعرض المكبّر.','הניחו את תמונות המעון בתיקייה assets/gallery והוסיפו שורה לכל תמונה בקובץ js/gallery-data.js, והן יופיעו כאן מיד עם הסינון והתצוגה המוגדלת.')}
+      ${tb('h3','الصور في الطريق','התמונות בדרך')}
+      ${tb('p','نضيف صورًا جديدة من حكايات باستمرار. عودوا لزيارتنا قريبًا.','אנחנו מוסיפים כל הזמן תמונות חדשות מחכאיאת. בקרו אותנו שוב בקרוב.')}
     </div>
   </div>
 </section>
@@ -671,8 +660,8 @@ P.push({ slug:'contact', sig:'pink',
           </div>
           <div class="field">
             <label for="f-age">${t('عمر الطفل','גיל הילד')}</label>
-            <!-- options cannot contain markup, so the language swap sets their
-                 text from data-ar / data-he instead of hiding spans -->
+            ${/* options cannot contain markup, so the language swap sets their
+                 text from data-ar / data-he instead of hiding spans */''}
             <select id="f-age" name="age">
               <option value="" data-ar="اختاروا المجموعة" data-he="בחרו קבוצה">اختاروا المجموعة</option>
               ${AGES.map(a=>`<option value="${a.ar}" data-ar="${a.ar} - ${a.ageAr}" data-he="${a.he} - ${a.ageHe}">${a.ar} - ${a.ageAr}</option>`).join('')}
@@ -732,3 +721,42 @@ all.forEach(p => {
   console.log('  ✓', href(p.slug));
 });
 console.log(`\n${all.length} pages written.`);
+
+/* ------------------------------------------------------------------ 404
+   Netlify serves this at any address that doesn't exist - including deep ones
+   like /a/b/c - so every link and asset must be absolute, or it arrives
+   unstyled. Never indexed, no canonical. */
+const notFound = layout({
+  slug: '404', sig: 'pink',
+  title: { ar: 'الصفحة غير موجودة', he: 'הדף לא נמצא' },
+  desc:  { ar: 'الصفحة التي تبحثون عنها غير موجودة.', he: 'הדף שחיפשתם לא קיים.' },
+  // layout() takes the body as finished HTML, not a function (the page loop
+  // above calls p.body(p) for the others before handing it over)
+  body: `
+<section class="section">
+  <div class="wrap" style="text-align:center;max-width:640px">
+    <div style="font-family:var(--font-display);font-weight:800;font-size:clamp(4rem,14vw,7rem);line-height:1;color:var(--pink-d)">404</div>
+    ${tb('h1','هذه الصفحة ضاعت في الطريق','הדף הזה הלך לאיבוד בדרך')}
+    ${tb('p','ربما تغيّر العنوان، أو أن الصفحة لم تعد موجودة. كل ما تبحثون عنه ما زال في حكايات.','אולי הכתובת השתנתה, או שהדף כבר לא קיים. כל מה שאתם מחפשים עדיין נמצא בחכאיאת.','lead')}
+    <div class="hero__cta" style="justify-content:center;margin-top:1.6rem">
+      <a class="btn btn--primary" href="${href('index')}">${t('إلى الصفحة الرئيسية','לדף הבית')}</a>
+      <a class="btn btn--ghost" href="${href('contact')}">${t('تواصلوا معنا','צרו קשר')}</a>
+    </div>
+  </div>
+</section>`,
+}).replace(/<link rel="canonical"[^>]*>\n?/, '')
+  .replace(/<meta property="og:url"[^>]*>\n?/, '')
+  .replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex">')
+  .replace(/(href|src)="(?!https?:|\/|#|mailto:|tel:|data:)/g, '$1="/');
+fs.writeFileSync(path.join(OUT, '404.html'), notFound);
+
+/* --------------------------------------------------- robots + sitemap
+   Built from SITE.url, so moving to a real domain updates both. */
+const today = new Date().toISOString().slice(0, 10);
+fs.writeFileSync(path.join(OUT, 'sitemap.xml'),
+  '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+  all.map(p => `  <url><loc>${pageUrl(p.slug)}</loc><lastmod>${today}</lastmod></url>`).join('\n') +
+  '\n</urlset>\n');
+fs.writeFileSync(path.join(OUT, 'robots.txt'),
+  `User-agent: *\nAllow: /\n\nSitemap: ${SITE.url}/sitemap.xml\n`);
+console.log('  ✓ 404.html, sitemap.xml, robots.txt');

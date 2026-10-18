@@ -18,3 +18,77 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+# ------------------------------------------------------------- launch
+# The site publishes the whole repo folder, so without these, anyone could open
+# the setup notes, build scripts and parked login code on the nursery's domain.
+# Each answers with the 404 page instead. `force` makes the rule win even though
+# the file exists. Nothing here affects the build, which reads files from disk.
+#
+# If EDIT_MODE in build.js is turned back on, delete the /js/edit.js and
+# /admin/* entries so the editor can load again.
+[[redirects]]
+  from = "/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/SETUP-ADMIN.md"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/sync.sh"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/build.js"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/build-pages.js"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/netlify.toml"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/.gitignore"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/.nvmrc"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/js/edit.js"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/content/*"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/tools/*"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/admin/*"
+  to = "/404.html"
+  status = 404
+  force = true
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404.html"
+  status = 404
+  force = true

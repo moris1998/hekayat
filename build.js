@@ -36,7 +36,11 @@ const waNumber = CFG.whatsapp;
 /* schema.org wants HH:MM, but site.json stores the human form (7:30) */
 const pad = t => t.padStart(5, '0');
 /* Bump when css/js change, so a phone that cached the old files reloads them. */
-const ASSET_V = '21';
+const ASSET_V = '22';
+/* The tap-to-edit system (js/edit.js + netlify/functions) is parked. While this
+   is false, visitors don't download it and no page carries data-edit markers.
+   Set it to true to bring editing back - nothing else needs to change. */
+const EDIT_MODE = false;
 
 /* --------------------------------------------------------------- icons
    Stroke glyphs follow the Tabler Icons geometry (MIT), 24x24 grid,
@@ -254,11 +258,15 @@ function footer(){
 }
 
 const href = s => (s==='index' ? 'index.html' : s + '.html');
+/* the address Netlify actually serves (pretty URLs: /about, not /about.html).
+   Canonical links, og:url and the sitemap all use this, so search engines and
+   shared links see one URL per page. */
+const pageUrl = s => SITE.url + (s === 'index' ? '/' : '/' + s);
 
 /* --------------------------------------------------------------- shell */
 function layout(p){
   const title = { ar:`${p.title.ar} | ${SITE.name.ar}`, he:`${p.title.he} | ${SITE.name.he}` };
-  return `<!doctype html>
+  const html = `<!doctype html>
 <html lang="ar" dir="rtl" data-page="${p.slug}" data-titles='${JSON.stringify(title).replace(/'/g,"&#39;")}'>
 <head>
 <meta charset="utf-8">
@@ -270,7 +278,8 @@ function layout(p){
 <meta name="supported-color-schemes" content="light">
 <link rel="icon" href="assets/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="assets/favicon.png">
-<link rel="canonical" href="${SITE.url}/${href(p.slug)}">
+<link rel="canonical" href="${pageUrl(p.slug)}">
+<meta property="og:url" content="${pageUrl(p.slug)}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${title.ar}">
 <meta property="og:description" content="${p.desc.ar}">
@@ -308,9 +317,10 @@ ${footer()}
   <div><img id="lb-img" src="" alt=""><p class="lb__cap" id="lb-cap"></p></div>
 </div>
 <script src="js/site.js?v=${ASSET_V}"></script>
-<script src="js/edit.js?v=${ASSET_V}" defer></script>
+${EDIT_MODE ? `<script src="js/edit.js?v=${ASSET_V}" defer></script>` : ''}
 </body>
 </html>`;
+  return EDIT_MODE ? html : html.replace(/\s+data-edit="[^"]*"/g, '');
 }
 
 /* a consistent "read the whole page" link for the home-page teasers */
@@ -614,7 +624,7 @@ ${ageBlock()}
 </section>`
 };
 
-module.exports = { C, CFG, WISDOM, GALLERY, te, teb, DOODLE, doodle, photo, SITE, NAV, CONTACT, AGES, CREATURE, I, svg, t, tb, href, layout, banner, ageBlock, home, waNumber, OUT, fs, path };
+module.exports = { pageUrl, C, CFG, WISDOM, GALLERY, te, teb, DOODLE, doodle, photo, SITE, NAV, CONTACT, AGES, CREATURE, I, svg, t, tb, href, layout, banner, ageBlock, home, waNumber, OUT, fs, path };
 
 /* pages 2..15 live in build-pages.js and are appended by the runner */
 if (require.main === module) require('./build-pages.js');
