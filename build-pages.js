@@ -747,7 +747,9 @@ const notFound = layout({
 }).replace(/<link rel="canonical"[^>]*>\n?/, '')
   .replace(/<meta property="og:url"[^>]*>\n?/, '')
   .replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex">')
-  .replace(/(href|src)="(?!https?:|\/|#|mailto:|tel:|data:)/g, '$1="/');
+  // "(?!…|")": leave empty values alone - the lightbox's src="" would become
+  // src="/", and every 404 would fetch the home page as an image
+  .replace(/(href|src)="(?!https?:|\/|#|mailto:|tel:|data:|")/g, '$1="/');
 fs.writeFileSync(path.join(OUT, '404.html'), notFound);
 
 /* --------------------------------------------------- robots + sitemap
