@@ -1,5 +1,5 @@
 {
-  "_note": "Staff roster. Each team member's ar line is Sahera's own tribute, copied from her Instagram card (only obvious typos fixed); he is our translation of it. The director has no line on purpose - nobody wrote one for her. photo files live in assets/team/. Confirm the repeated names (هبه, حنان).",
+  "_note": "Staff roster. Each team member's ar line is Sahera's own tribute, copied from her Instagram card (only obvious typos fixed); he is our translation of it. The director has no line on purpose - nobody wrote one for her. photo files live in assets/team/. Confirm the repeated name (حنان).",
   "director": {
     "name_ar": "ساهرة نصرالله",
     "name_he": "סאהרה נסראללה",
@@ -93,13 +93,6 @@
       "photo": "team-rakeel.jpg",
       "ar": "الروح الحلوة المليانة فرح وحياة",
       "he": "הנשמה המתוקה, מלאת שמחה וחיים"
-    },
-    {
-      "name_ar": "هبه",
-      "name_he": "הבה",
-      "photo": "team-heba-2.jpg",
-      "ar": "الحب المجبول بالصبر والاحتواء، وشطارة بحطّان الحدود الي بتعطي الحلوين شعور بالأمان",
-      "he": "אהבה שנלושה בסבלנות ובהכלה, וחוכמה בהצבת גבולות שנותנת למתוקים תחושת ביטחון"
     },
     {
       "name_ar": "خالتو أصوان",
