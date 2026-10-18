@@ -19,6 +19,15 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# The site moved to hekayatz.com. Links already shared to the old address go
+# to the same page on the new one. Written here rather than relying on the
+# dashboard's primary-domain setting, which didn't redirect on its own.
+[[redirects]]
+  from = "https://hekayatz.netlify.app/*"
+  to = "https://hekayatz.com/:splat"
+  status = 301
+  force = true
+
 # The license page was removed (no license photo yet). Its safety checklist and
 # camera note moved to the building page, so old links land there.
 [[redirects]]
