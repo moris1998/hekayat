@@ -32,6 +32,28 @@ const roomsTour = () => `<div class="rooms">
   }).join('')}
 </div>`;
 
+/* The staff cards came from Sahera's Instagram with the Arabic name and tribute
+   burned into the image, so every card also carries the name and tribute as real
+   text underneath - otherwise the Hebrew side of the site shows Arabic pictures
+   with nothing to read, and neither search nor a screen reader sees a thing. */
+const TEAM = B.C('team.json');
+
+const teamCard = (p, lead = false) => {
+  const role = p.role_ar ? tb('p', p.role_ar, p.role_he, 'mate__role') : '';
+  return `<figure class="mate${lead ? ' mate--lead' : ''} rv">
+    <img src="assets/team/${p.photo}" alt="${p.name_ar} - ${p.ar}" loading="lazy" decoding="async">
+    <figcaption>
+      ${tb('h3', p.name_ar, p.name_he, 'mate__name')}
+      ${role}
+      ${tb('p', p.ar, p.he, 'mate__line')}
+    </figcaption>
+  </figure>`;
+};
+
+const teamGrid = () => `
+  ${teamCard({ ...TEAM.director, role_ar: TEAM.director.role_ar, role_he: TEAM.director.role_he }, true)}
+  <div class="mates">${TEAM.team.map(p => teamCard(p)).join('')}</div>`;
+
 const P = [];
 
 /* ------------------------------------------------------------- 2 about */
@@ -227,7 +249,16 @@ P.push({ slug:'team', sig:'green',
           <div class="card__ico" style="background:color-mix(in srgb,var(--${c}) 14%,transparent);color:var(--${c})">${svg(ic)}</div>
           ${tb('h3',ar,he)}${tb('p',par,phe)}</div>`).join('')}
     </div>
-    ${draft('صفحة الطاقم جاهزة لاستقبال أسماء المربّيات وصورهنّ ونبذة قصيرة عن كل واحدة، حالما تزوّدونا بها.','דף הצוות מוכן לקבל את שמות המטפלות, תמונותיהן ותיאור קצר על כל אחת, ברגע שתעבירו לנו אותם.')}
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head center">
+      ${tb('h2','وجوه حكايات','הפנים של חכאיאת')}
+      ${tb('p','هذه الكلمات كتبتها ساهرة عن كل واحدة منهنّ.','את המילים האלה כתבה סאהרה על כל אחת מהן.','lead')}
+    </div>
+    ${teamGrid()}
   </div>
 </section>` });
 

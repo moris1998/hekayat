@@ -488,6 +488,43 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
   .room__ico svg{width:30px;height:30px}
 }
 
+/* ---------- the team ---------- */
+/* the cards arrive at wildly different heights, so they flow in columns rather
+   than a grid - nothing gets stretched or cropped to match a neighbour */
+.mates{columns:3;column-gap:1.2rem;margin-top:1.6rem}
+.mate{
+  break-inside:avoid;margin:0 0 1.2rem;background:var(--surface);
+  border:3px solid var(--ink);border-radius:20px;overflow:hidden;
+  box-shadow:5px 5px 0 var(--green);
+}
+.mate img{display:block;width:100%;height:auto}
+.mate figcaption{padding:.9rem 1.1rem 1.1rem}
+.mate__name{margin:0;font-size:1.15rem;color:var(--green-d)}
+.mate__role{
+  margin:.1rem 0 0;font-size:.8rem;font-weight:700;letter-spacing:.04em;
+  color:var(--orange-d);
+}
+.mate__line{margin:.4rem 0 0;font-size:.92rem;line-height:1.6;color:#4a423a}
+
+/* the director sits above the rest, photo beside her words */
+.mate--lead{
+  display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+  align-items:center;gap:clamp(1rem,3vw,2rem);
+  box-shadow:7px 7px 0 var(--pink);margin-bottom:0;
+}
+.mate--lead img{height:100%;object-fit:cover;max-height:460px}
+.mate--lead figcaption{padding:clamp(1.2rem,3vw,2rem)}
+.mate--lead .mate__name{font-size:clamp(1.4rem,3vw,2rem);color:var(--pink-d)}
+.mate--lead .mate__role{color:var(--pink-d);font-size:.9rem}
+.mate--lead .mate__line{font-size:1.02rem}
+
+@media (max-width:900px){ .mates{columns:2} }
+@media (max-width:620px){
+  .mates{columns:1}
+  .mate--lead{grid-template-columns:1fr}
+  .mate--lead img{max-height:320px}
+}
+
 /* ---------- gallery ---------- */
 .gal{columns:3;column-gap:1rem}
 .gal figure{break-inside:avoid;margin-bottom:1rem;border-radius:var(--r-card);overflow:hidden;position:relative;cursor:pointer;background:var(--surface);border:1px solid var(--line)}
