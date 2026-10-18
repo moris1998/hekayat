@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hekayatz.netlify.app/sitemap.xml
+Sitemap: https://hekayatz.com/sitemap.xml

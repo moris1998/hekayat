@@ -30,7 +30,7 @@ const SITE = {
   mobile: CFG.mobile,
   phone:  CFG.phone,
   fb:     CFG.facebook,
-  url:    'https://hekayatz.netlify.app',
+  url:    'https://hekayatz.com',
 };
 const waNumber = CFG.whatsapp;
 /* schema.org wants HH:MM, but site.json stores the human form (7:30) */
