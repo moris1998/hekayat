@@ -6,6 +6,14 @@ const { pageUrl, SITE, AGES, CREATURE, CFG, WISDOM, GALLERY, svg, t, tb, te, teb
    is empty still gets its text block - no empty strip, no broken layout. */
 const ROOMS = B.C('rooms.json').rooms;
 
+/* A room's text: either one paragraph (ar/he), or Sahera's longer write-up as
+   paras[] plus an optional closing tagline. **…** in her text is her bold. */
+const bold = s => s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+const roomBody = r => r.paras
+  ? `<div class="room__body">${r.paras.map(p => tb('p', bold(p.ar), bold(p.he), 'room__text')).join('')}
+     ${r.tagline ? tb('p', r.tagline.ar, r.tagline.he, 'room__tag') : ''}</div>`
+  : tb('p', r.ar, r.he, 'room__text');
+
 const roomsTour = () => `<div class="rooms">
   ${ROOMS.map(r => {
     const a = AGES.find(x => x.key === r.key);
@@ -19,7 +27,7 @@ const roomsTour = () => `<div class="rooms">
           <p class="room__age">${t(a.ageAr, a.ageHe)}</p>
         </div>
       </div>
-      ${tb('p', r.ar, r.he, 'room__text')}
+      ${roomBody(r)}
       ${shots.length ? `<div class="room__shots">
         ${shots.map(p => photo(p.src, p.ar, p.he, 'photo--tall')).join('')}
       </div>` : `<p class="room__soon">${t('صور هذه الغرفة في الطريق.','התמונות של החדר הזה בדרך.')}</p>`}

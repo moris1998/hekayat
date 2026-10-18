@@ -535,6 +535,16 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
 .room__name{margin:0;color:var(--cd);font-size:clamp(1.3rem,3vw,1.7rem)}
 .room__age{margin:.15rem 0 0;font-size:.9rem;font-weight:600;opacity:.75}
 .room__text{margin:0 0 1.1rem;max-width:62ch}
+/* a longer write-up: paragraphs sit closer together, her bold in the class
+   colour, and the closing line set apart as the class's own motto */
+.room__body{margin-bottom:1.3rem;max-width:62ch}
+.room__body .room__text{margin:0 0 .75rem}
+.room__body strong{color:var(--cd);font-weight:800}
+.room__tag{
+  margin:1rem 0 0;padding:.7rem 1rem;border-radius:14px;
+  font-family:var(--font-display);font-weight:800;line-height:1.5;color:var(--cd);
+  background:color-mix(in srgb,var(--c) 14%,#fff);
+}
 .room__shots{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
 .room__soon{
   margin:0;font-size:.92rem;font-weight:600;color:var(--cd);

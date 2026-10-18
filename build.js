@@ -36,7 +36,7 @@ const waNumber = CFG.whatsapp;
 /* schema.org wants HH:MM, but site.json stores the human form (7:30) */
 const pad = t => t.padStart(5, '0');
 /* Bump when css/js change, so a phone that cached the old files reloads them. */
-const ASSET_V = '24';
+const ASSET_V = '25';
 /* The tap-to-edit system (js/edit.js + netlify/functions) is parked. While this
    is false, visitors don't download it and no page carries data-edit markers.
    Set it to true to bring editing back - nothing else needs to change. */
@@ -348,7 +348,7 @@ const AGES = [
     dAr:'سنّ الخطوات الأولى والكلمات الأولى. نوسّع المساحة أمامهم بأمان، ونحوّل كل محاولة وقوف إلى لعبة، وكل صوت جديد إلى كلمة.',
     dHe:'גיל הצעדים והמילים הראשונות. אנחנו מרחיבים להם את המרחב בבטחה, הופכים כל ניסיון עמידה למשחק וכל צליל חדש למילה.' },
   { key:'nahlat', lo:22, hi:27, c:'green', ar:'نحلات', he:'נחלאת',
-    ageAr:'سنة و10 شهور حتى سنتين و3 شهور', ageHe:'שנה ו-10 חודשים עד שנתיים ו-3 חודשים',
+    ageAr:'سنة و10 شهور حتى سنتين وشهرين', ageHe:'שנה ו-10 חודשים עד שנתיים וחודשיים',
     dAr:'نشاط لا يهدأ، وفضول يسأل عن كل شيء. نوجّه هذه الطاقة إلى اللعب المشترك، والرسم، والحركة، وأول قواعد الحياة مع الآخرين. نعزّز الثقة بالنفس والتقدير الذاتي، وننمّي الاستقلالية ليكونوا جاهزين للروضات.',
     dHe:'פעילות בלי הפסקה וסקרנות ששואלת על הכול. אנחנו מנתבים את האנרגיה למשחק משותף, ציור, תנועה, וכללי החיים הראשונים עם אחרים. אנחנו מחזקים ביטחון עצמי והערכה עצמית, ומפתחים עצמאות כדי שיגיעו מוכנים לגן.' },
   { key:'farashat', lo:27, hi:36, c:'cyan', ar:'فراشات', he:'פראשאת',
