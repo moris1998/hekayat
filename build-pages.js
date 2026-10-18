@@ -45,13 +45,16 @@ const teamCard = (p, lead = false) => {
     <figcaption>
       ${tb('h3', p.name_ar, p.name_he, 'mate__name')}
       ${role}
-      ${tb('p', p.ar, p.he, 'mate__line')}
+      ${p.ar ? tb('p', p.ar, p.he, 'mate__line') : ''}
     </figcaption>
   </figure>`;
 };
 
+/* the attribution line sits between the director and the team on purpose:
+   Sahera wrote the tributes about her staff, not about herself */
 const teamGrid = () => `
-  ${teamCard({ ...TEAM.director, role_ar: TEAM.director.role_ar, role_he: TEAM.director.role_he }, true)}
+  ${teamCard(TEAM.director, true)}
+  ${tb('p','وهذه الكلمات كتبتها ساهرة عن كل واحدة منهنّ.','ואת המילים האלה כתבה סאהרה על כל אחת מהן.','mates__intro')}
   <div class="mates">${TEAM.team.map(p => teamCard(p)).join('')}</div>`;
 
 const P = [];
@@ -256,7 +259,6 @@ P.push({ slug:'team', sig:'green',
   <div class="wrap">
     <div class="sec-head center">
       ${tb('h2','وجوه حكايات','הפנים של חכאיאת')}
-      ${tb('p','هذه الكلمات كتبتها ساهرة عن كل واحدة منهنّ.','את המילים האלה כתבה סאהרה על כל אחת מהן.','lead')}
     </div>
     ${teamGrid()}
   </div>

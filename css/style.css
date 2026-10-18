@@ -518,6 +518,10 @@ html[dir="rtl"] .acc__body{padding-inline:calc(1.35rem + 32px + .9rem) 1.35rem}
 .mate--lead .mate__role{color:var(--pink-d);font-size:.9rem}
 .mate--lead .mate__line{font-size:1.02rem}
 
+.mates__intro{
+  margin:clamp(2rem,4vw,2.8rem) 0 0;text-align:center;
+  font-family:var(--font-display);font-weight:700;font-size:1.05rem;color:var(--green-d);
+}
 @media (max-width:900px){ .mates{columns:2} }
 @media (max-width:620px){
   .mates{columns:1}
